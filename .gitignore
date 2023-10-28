@@ -121,6 +121,7 @@ GitHub.sublime-settings
 
 # Personal additions
 __pycache__/
+__pycache__
 *.pyc
 __localcode
 venv
