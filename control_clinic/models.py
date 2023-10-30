@@ -69,7 +69,7 @@ class Doctor_specialty(db.Model):
     __tablename__ = "doctor_specialty"
     id = db.Column(db.Integer, primary_key=True)
     specialty = db.Column(db.String(90), nullable=False, default="undefined")
-    doctor_id = db.Column(db.Integer, nullable=False, foreign_key="doctor.id")
+    doctor_id = db.Column(db.ForeignKey("doctor.id"), nullable=False)
 
     def __str__(self):
         return self.specialty
@@ -92,7 +92,6 @@ class Patient(db.Model):
 
     def __str__(self):
         return self.firstname
-    
 
     def __init__(self, firstname, lastname, birtday, sex):
         if sex not in [choice[0] for choice in SEX_CHOICES]:
