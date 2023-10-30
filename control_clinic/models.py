@@ -84,6 +84,8 @@ class Patient(db.Model):
     sex = db.Column(db.String(10), nullable=False)
     name_father = db.Column(db.String(45), nullable=True)
     name_mather = db.Column(db.String(45), nullable=True)
+    document = db.Column(db.String(45), unique=True ,nullable=False)
+    email = db.Column(db.String(45), nullable=True, default="undefined@undefined.com")
     phone = db.relationship("Patient_phone", backref="patient", uselist=False)
     created_at = db.Column(
         db.DateTime, default=datetime.now, server_default=db.func.now())

@@ -1,0 +1,56 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Registrar paciente</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    <div class="container-sm mt-3">
+      <h2 class="text-center">Registrar paciente</h2>
+    <form>
+        <div class="form-group">
+            <label for="firstname">Primer nombre</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" required autocomplete="off" autofocus autocapitalize="words">
+        </div>
+        <div class="form-group">
+            <label for="lastname">Apellido</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" required autocomplete="off" autocapitalize="words">
+        </div>
+        <div class="form-group">
+          <label for="lastname">Cumpleaños</label>
+          <input type="date" class="form-control" id="Cumpleaños" name="Cumpleaños" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="sex">Sexo</label>
+          <select class="form-control" id="sex" name="sex">
+            <option value=""></option>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Femenino</option>
+            <option value="outros">Otro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="name_father">Apellido paterno</label>
+          <input type="text" class="form-control" id="name_father" name="name_father" required autocomplete="off" autocapitalize="words">
+        </div>
+        <div class="form-group">
+          <label for="name_mather">Apellido materno</label>
+          <input type="text" class="form-control" id="name_mather" name="name_mather" required autocomplete="off" autocapitalize="words">
+        </div>
+        <div class="form-group">
+          <label for="document">Documento</label>
+          <input type="text" class="form-control" id="document" name="document" required autocomplete="off" autocapitalize="no">
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+            <label for="phone">Teléfono móvil</label>
+            <input type="text" class="form-control" id="phone" name="phone" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Registrar</button>
+      </form>
+    </div>
+</section>
+{% endblock content %}
