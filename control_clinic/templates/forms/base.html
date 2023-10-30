@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="pt-br">
+    {% block head %}
+        {% include "partials/_head.html" %}
+        {% block title %}<title></title>{% endblock title %}
+        {% endblock head %}
+    {% block content %}
+    <body>
+        <h2>Formulario</h2>
+    {% block scripts %}
+    {% include "partials/_scripts.html" %}
+    {% endblock scripts %} 
+
+    </body>
+
+  {% endblock content %}
+</html>
