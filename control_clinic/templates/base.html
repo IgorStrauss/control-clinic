@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pt-br">
+    {% block head %}
+        {% include "partials/_head.html" %}
+        {% block title %}<title>Control-Clinic</title>{% endblock title %}
+        {% endblock head %}
+    {% block content %}
+    <body>
+        {% include "partials/_navbar.html" %}
+
+    {% block scripts %}
+    {% include "partials/_scripts.html" %}
+    {% endblock scripts %} 
+
+    </body>
+
+  {% endblock content %}
+</html>

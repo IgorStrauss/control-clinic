@@ -92,7 +92,6 @@ class Patient(db.Model):
 
     def __str__(self):
         return self.firstname
-    
 
     def __init__(self, firstname, lastname, birtday, sex):
         if sex not in [choice[0] for choice in SEX_CHOICES]:
