@@ -17,3 +17,7 @@ def init_app(app):
     @app.route("/cadastro/especialidade", endpoint="register_specialty")
     def register_specialty():
         return render_template("forms/register-specialty.html")
+
+    @app.route("/cadastro/paciente", endpoint="register_patient")
+    def register_patient():
+        return render_template("forms/register-patient.html")
