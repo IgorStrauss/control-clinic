@@ -1,12 +1,12 @@
 {% extends "forms/base.html" %}
-{% block title %}<title>Registrar Empleado</title>{% endblock title %}
+{% block title %}<title>Registrar medico</title>{% endblock title %}
 {% block content %}
 <section>
     {% include "forms/_navbar-register.html" %}
 </section>
 <section>
     <div class="container-sm mt-3">
-      <h2 class="text-center">Registrar empleado</h2>
+      <h2 class="text-center">Registrar medico</h2>
     <form>
         <div class="form-group">
             <label for="firstname">Primer nombre</label>
@@ -21,13 +21,26 @@
           <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label for="registro">Registro medico</label>
+          <input type="text" class="form-control" id="registro" name="registro" required autocomplete="off" autocapitalize="no">
+       </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="specialty">Especialidad</label>
+            <select class="form-control" id="specialty" name="specialty" required>
+              <option value=""></option>
+                <option value="">Medicina General</option>
+                <option value="">Medicina Interna</option>
+                <option value="">Medicina Pediatria</option>
+            </select>            
         </div>
         <div class="form-group">
             <label for="phone">Teléfono móvil</label>
             <input type="text" class="form-control" id="phone" name="phone" required autocomplete="off">
-        </div>
+        </div>        
         <button type="submit" class="btn btn-primary">Registrar</button>
       </form>
     </div>
