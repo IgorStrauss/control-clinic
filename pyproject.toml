@@ -13,6 +13,8 @@ gunicorn = "^21.2.0"
 python-dotenv = "^1.0.0"
 flask-sqlalchemy = "^3.1.1"
 flask-migrate = "^4.0.5"
+flask-wtf = "^1.2.1"
+email-validator = "^2.1.0.post1"
 
 
 [build-system]
