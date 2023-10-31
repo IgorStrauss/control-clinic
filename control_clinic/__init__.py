@@ -1,9 +1,11 @@
 import os
 from flask import Flask
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 from . import views
 from .models import db
 Migrate()
+CSRFProtect()
 
 
 def create_app():
@@ -25,5 +27,6 @@ def create_app():
 
     db.init_app(app)
     Migrate(app, db)
+    CSRFProtect(app)
 
     return app

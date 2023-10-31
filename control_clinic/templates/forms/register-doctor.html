@@ -5,9 +5,14 @@
     {% include "forms/_navbar-register.html" %}
 </section>
 <section>
+  {% include "partials/_messages.html" %}
     <div class="container-sm mt-3">
       <h2 class="text-center">Registrar medico</h2>
-    <form>
+
+      <form action="{{ url_for('register_doctor') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {{ form.hidden_tag() }}
+
         <div class="form-group">
             <label for="firstname">Primer nombre</label>
             <input type="text" class="form-control" id="firstname" name="firstname" required autocomplete="off" autofocus autocapitalize="words">
@@ -21,8 +26,8 @@
           <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
         </div>
         <div class="form-group">
-          <label for="registro">Registro medico</label>
-          <input type="text" class="form-control" id="registro" name="registro" required autocomplete="off" autocapitalize="no">
+          <label for="register">Registro medico</label>
+          <input type="text" class="form-control" id="register" name="register" required autocomplete="off" autocapitalize="no">
        </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -32,9 +37,9 @@
             <label for="specialty">Especialidad</label>
             <select class="form-control" id="specialty" name="specialty" required>
               <option value=""></option>
-                <option value="">Medicina General</option>
-                <option value="">Medicina Interna</option>
-                <option value="">Medicina Pediatria</option>
+              {% for specialidad  in specialidads %}
+                <option value="{{ specialidad.name }}">{{ specialidad.name }}</option>
+              {% endfor %}
             </select>            
         </div>
         <div class="form-group">
