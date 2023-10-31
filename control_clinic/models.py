@@ -1,6 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+
 from .service import SEX_CHOICES
+
 db = SQLAlchemy()
 
 
@@ -48,8 +51,7 @@ class Doctor(db.Model):
     updated_at = db.Column(
         db.DateTime, onupdate=datetime.now, server_default=db.func.now())
     phone = db.relationship("Doctor_phone", backref="doctor", uselist=False)
-    specialty = db.relationship(
-        "Doctor_specialty", backref="doctor", uselist=True)
+    specialty = db.Column(db.ForeignKey("doctor_specialty.id"), nullable=False)
 
     def __str__(self):
         return self.firstname
@@ -68,11 +70,11 @@ class Doctor_phone(db.Model):
 class Doctor_specialty(db.Model):
     __tablename__ = "doctor_specialty"
     id = db.Column(db.Integer, primary_key=True)
-    specialty = db.Column(db.String(90), nullable=False, default="undefined")
-    doctor_id = db.Column(db.ForeignKey("doctor.id"), nullable=False)
+    name = db.Column(db.String(90), unique=True,
+                     nullable=False, default="undefined")
 
     def __str__(self):
-        return self.specialty
+        return self.name
 
 
 class Patient(db.Model):

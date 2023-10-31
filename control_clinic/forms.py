@@ -36,3 +36,13 @@ class EmployeeForm(FlaskForm):
     phone = StringField(
         "Teléfono móvil", validators=[DataRequired("Este campo é obrigatório.")]
     )
+
+
+class SpecialtyForm(FlaskForm):
+    name = StringField(
+        "Especialidad",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
