@@ -1,8 +1,9 @@
 from flask import flash, redirect, render_template, url_for
 from werkzeug.security import generate_password_hash
 
-from .forms import EmployeeForm, SpecialtyForm
-from .models import Doctor_specialty, Employees, db
+from .forms import DoctorForm, EmployeeForm, PatientForm, SpecialtyForm
+from .models import (Doctor, Doctor_phone, Doctor_specialty, Employee_phone,
+                     Employees, Patient, Patient_phone, db)
 
 
 def init_app(app):
@@ -33,6 +34,15 @@ def init_app(app):
                     )
                     db.session.add(employee)
                     db.session.commit()
+
+                    # Adicionando telefone
+                    phone = Employee_phone(
+                        phone=form.phone.data,
+                        employee=employee,
+                    )
+                    db.session.add(phone)
+                    db.session.commit()
+
                     flash("Empleado registrado exitosamente!", "success")
                     return redirect(url_for("index"))
             except Exception as e:
@@ -40,14 +50,54 @@ def init_app(app):
                 for error_message in e.args:
                     print(error_message)
                 flash(
-                    "Error al intentar dar de alta al empleado, inténtalo de nuevo.",
+                    "Error al intentar registrarme.",
                     "error",
                 )
         return render_template("forms/register-employee.html", form=form)
 
-    @app.route("/cadastro/medico", endpoint="register_doctor")
+    @app.route("/cadastro/medico", methods=["GET", "POST"], endpoint="register_doctor")
     def register_doctor():
-        return render_template("forms/register-doctor.html")
+        specialidads = Doctor_specialty.query.all()
+        form = DoctorForm()
+
+        if form.validate_on_submit():
+            try:
+                # Verifique se o email já existe
+                existing_doctor = Doctor.query.filter_by(
+                    email=form.email.data).first()
+                if existing_doctor:
+                    flash("Este correo ya estaba registrado.", "error")
+                else:
+                    doctor = Doctor(
+                        firstname=form.firstname.data.upper(),
+                        lastname=form.lastname.data.upper(),
+                        email=form.email.data,
+                        register=form.register.data,
+                        password=generate_password_hash(form.password.data),
+                        specialty=form.specialty.data,
+                    )
+                    db.session.add(doctor)
+                    db.session.commit()
+
+                    phone = Doctor_phone(
+                        phone=form.phone.data,
+                        doctor=doctor,
+                    )
+                    db.session.add(phone)
+                    db.session.commit()
+                    flash("Médico registrado exitosamente!", "success")
+                    return redirect(url_for("index"))
+            except Exception as e:
+                db.session.rollback()
+                for error_message in e.args:
+                    print(error_message)
+                flash(
+                    "Error al intentar registrarme.",
+                    "error",
+                )
+        return render_template(
+            "forms/register-doctor.html", specialidads=specialidads, form=form
+        )
 
     @app.route(
         "/cadastro/especialidade",
@@ -63,7 +113,6 @@ def init_app(app):
                 ).first()
                 if existing_specialty:
                     flash("La especialidad ya existe.", "error")
-                    print("linha 65")
                 else:
                     specialty = Doctor_specialty(
                         name=form.name.data.upper(),
@@ -78,12 +127,53 @@ def init_app(app):
                 for error_message in e.args:
                     print(error_message)
                 flash(
-                    "Error al intentar registrar la especialidad, o una existente, Inténtalo de nuevo.",
+                    "Error al intentar registrarme.",
                     "error",
                 )
 
         return render_template("forms/register-specialty.html", form=form)
 
-    @app.route("/cadastro/paciente", endpoint="register_patient")
+    @app.route(
+        "/cadastro/paciente", methods=["GET", "POST"], endpoint="register_patient"
+    )
     def register_patient():
-        return render_template("forms/register-patient.html")
+        form = PatientForm()
+        if form.validate_on_submit():
+            try:
+                existing_patient = Patient.query.filter_by(
+                    document=form.document.data
+                ).first()
+                if existing_patient:
+                    flash("El paciente ya existe.", "error")
+                else:
+                    patient = Patient(
+                        firstname=form.firstname.data.upper(),
+                        lastname=form.lastname.data.upper(),
+                        birtday=form.birtday.data,
+                        sex=form.sex.data,
+                        name_father=form.name_father.data.upper(),
+                        name_mather=form.name_mather.data.upper(),
+                        document=form.document.data.upper(),
+                        email=form.email.data,
+                    )
+                    db.session.add(patient)
+                    db.session.commit()
+
+                    phone = Patient_phone(
+                        phone=form.phone.data,
+                        patient=patient,
+                    )
+                    db.session.add(phone)
+                    db.session.commit()
+
+                    flash("Paciente registrado exitosamente!", "success")
+                    return redirect(url_for("index"))
+            except Exception as e:
+                db.session.rollback()
+                for error_message in e.args:
+                    print(error_message)
+                flash(
+                    "Error al intentar registrarme.",
+                    "error",
+                )
+        return render_template("forms/register-patient.html", form=form)
