@@ -30,7 +30,7 @@ class EmployeeForm(FlaskForm):
         "Password",
         validators=[
             DataRequired("Este campo é obrigatório."),
-            Length(min=8, message="Mínimo 8 caracteres"),
+            Length(min=8, max=64, message="Mínimo 8 caracteres"),
         ],
     )
     phone = StringField(

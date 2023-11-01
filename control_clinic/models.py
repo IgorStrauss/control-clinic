@@ -21,7 +21,7 @@ class Employees(db.Model):
     )
     is_active = db.Column(db.Boolean, default=True)
     is_admin = db.Column(db.Boolean, default=False)
-    password = db.Column(db.String(128), nullable=False)
+    password = db.Column(db.String(64), nullable=False)
     phone = db.relationship("Employee_phone", backref="employee", uselist=False)
 
     def __str__(self):
