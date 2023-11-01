@@ -15,6 +15,9 @@ flask-sqlalchemy = "^3.1.1"
 flask-migrate = "^4.0.5"
 flask-wtf = "^1.2.1"
 email-validator = "^2.1.0.post1"
+flask-admin = "^1.6.1"
+flask-bootstrap = "^3.3.7.1"
+passlib = "^1.7.4"
 
 
 [build-system]
