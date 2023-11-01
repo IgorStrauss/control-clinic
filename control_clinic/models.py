@@ -31,11 +31,15 @@ class Employees(db.Model):
 class Employee_phone(db.Model):
     __tablename__ = "employee_phone"
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Integer, default=000)
+    phone = db.Column(db.String(14), default=000)
     employee_id = db.Column(db.ForeignKey("employee.id"), nullable=False)
 
     def __str__(self):
         return self.phone
+
+    @property
+    def format_employee_phone(self):
+        return f"({self.phone[:3]}) {self.phone[3:7]}-{self.phone[7:]}"
 
 
 class Doctor(db.Model):

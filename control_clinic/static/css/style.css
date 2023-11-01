@@ -1,0 +1,30 @@
+#fa-whatsapp {
+    color: #25D366;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
+#fa-email {
+    color: #EA4335;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
+#email-link i.fa-envelope {
+    font-size: 20px;  /* Tamanho inicial do ícone */
+    transition: transform 0.3s;  /* Duração da transição */
+}
+
+#email-link i.fa-envelope:hover {
+    font-size: 24px;  /* Tamanho do ícone quando o mouse passa por cima */
+    transform: scale(1.2);  /* Aumente o tamanho do ícone usando a escala */
+}
+#whatsapp-link i.fa-whatsapp {
+    font-size: 20px;  /* Tamanho inicial do ícone */
+    transition: transform 0.3s;  /* Duração da transição */
+}
+
+#whatsapp-link i.fa-whatsapp:hover {
+    font-size: 24px;  /* Tamanho do ícone quando o mouse passa por cima */
+    transform: scale(1.2);  /* Aumente o tamanho do ícone usando a escala */
+}
+
+

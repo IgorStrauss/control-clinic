@@ -55,6 +55,14 @@ def init_app(app):
                 )
         return render_template("forms/register-employee.html", form=form)
 
+    @app.route("/listar/funcionarios", endpoint="list_employees")
+    def list_employees():
+        employees = Employees.query.all()
+        return render_template(
+            "employees/list_employees.html",
+            employees=employees
+        )
+
     @app.route("/cadastro/medico", methods=["GET", "POST"], endpoint="register_doctor")
     def register_doctor():
         specialidads = Doctor_specialty.query.all()
