@@ -223,3 +223,55 @@ class DoctorUpdateForm(FlaskForm):
         ],
     )
     specialty = StringField()
+
+
+class PatientUpdateForm(FlaskForm):
+    firstname = StringField(
+        "Primer nombre",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    lastname = StringField(
+        "Apellido",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    birtday = StringField(
+        "fecha de nacimiento",
+        validators=[],
+    )
+    sex = StringField("Sexo", validators=[
+    ])
+    name_father = StringField(
+        "Apellido paterno",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres")
+        ],
+    )
+    name_mather = StringField(
+        "Apellido materno",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres")
+        ],
+    )
+    document = StringField(
+        "Documento",
+        validators=[
+            Length(min=4, message="Mínimo 4 caracteres"),
+        ],
+    )
+    email = StringField(
+        "email",
+        validators=[
+            Email("Endereço de e-mail inválido."),
+        ],
+    )
+    phone = StringField(
+        "phone",
+        validators=[
+            Length(min=10, max=15,
+                   message="Mínimo 10 caracteres, máximo 15 caracteres"),
+        ],
+    )

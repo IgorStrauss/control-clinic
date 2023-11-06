@@ -1,18 +1,24 @@
 {% extends "forms/base.html" %}
 
-{% block title %}<title>Listar clientes</title>{% endblock title %}
+{% block title %}<title>Paciente</title>{% endblock title %}
 {% block content %}
 <section>
     {% include "forms/_navbar-register.html" %}
 </section>
 <section>
     <div class="container-sm text-center mb-2">
-    <h3 class="mt-1">Lista de clientes</h3>
-</div>
+        <h3>Buscar paciente por número de documento</h3>
+        <form class="form-inline my-2 my-lg-0" action="{{ url_for('search_patient') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+            <input class="form-control mr-sm-2" type="search" name="document" placeholder="Documento" autocomplete="off" aria-label="Search" oninput="convertToUpperCase(this)">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+    </div>
 </section>
 <section>
     <div class="container-sm">
-        <table class="table">
+        <table class="table mt-2">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
@@ -26,12 +32,12 @@
             <tbody>
                 {% for patient in patients %}
                 <tr>
-                    <th scope="row"><a  href="{{ url_for('list_patient', id=patient.id) }}" class="btn btn-success">{{ patient.id }}</a></th>
+                    <th scope="row">{{ patient.id }}</th>
                     <td>{{ patient.firstname }}</td>
                     <td>{{ patient.lastname }}</td>
                     <th scope="row">{{ patient.document }}</th>
                     <td>{{ patient.email }}
-                        <a href="mailto:{{ patient.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
+                        <a href="mailto:{{ patient.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>
                     </td>
                     <td>
                         {{ patient.phone.format_patient_phone }}
@@ -43,11 +49,22 @@
                         No informado
                         {% endif %}
                     </td>
+                    <a  href="{{ url_for('update_patient', id=patient.id) }}" class="btn btn-outline-warning">Editar</a>
                 </tr>
                 {% endfor %}
-            </tbody>
+            </tbody>            
         </table>
-              
+        {% include "partials/_messages.html" %}
     </div>
 </section>
+
+{% block scripts %}
+
+{% endblock scripts %}
+<script>
+    function convertToUpperCase(inputElement) {
+        inputElement.value = inputElement.value.toUpperCase();
+    }
+</script>
+    
 {% endblock content %}
