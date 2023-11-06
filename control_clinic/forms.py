@@ -188,3 +188,38 @@ class DoctorForm(FlaskForm):
     specialty = StringField(
         "specialty", validators=[DataRequired("Este campo é obrigatório.")]
     )
+
+
+class DoctorUpdateForm(FlaskForm):
+    firstname = StringField(
+        "firstname",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    lastname = StringField(
+        "lastname",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    email = StringField(
+        "email",
+        validators=[
+            Email("Endereço de e-mail inválido."),
+        ],
+    )
+    register = StringField(
+        "register",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    phone = StringField(
+        "phone",
+        validators=[
+            Length(min=10, max=15,
+                   message="Mínimo 10 caracteres, máximo 15 caracteres"),
+        ],
+    )
+    specialty = StringField()

@@ -7,7 +7,7 @@
 </section>
 <section>
     <div class="container-sm text-center">
-    <h3>Lista de doctores</h3>
+    <h3 class="mt-1">Lista de doctores</h3>
     </div>
 </section>
 <section>
@@ -24,19 +24,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for medico in medicos %}
+                {% for doctor in doctors %}
                 <tr>
-                    <th scope="row">{{ medico.id }}</th>
-                    <th scope="row">{{ medico.register }}</th>
-                    <td>{{ medico.firstname }}</td>
-                    <td>{{ medico.lastname }}</td>
-                    <td>{{ medico.email }}
-                        <a href="mailto:{{ medico.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
+                    <th scope="row"><a  href="{{ url_for('list_doctor', id=doctor.id) }}" class="btn btn-success">{{ doctor.id }}</a></th>
+                    <th scope="row">{{ doctor.register }}</th>
+                    <td>Dr(a) {{ doctor.firstname }}</td>
+                    <td>{{ doctor.lastname }}</td>
+                    <td>{{ doctor.email }}
+                        <a href="mailto:{{ doctor.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
                     </td>
                     <td>
-                        {{ medico.phone.format_doctor_phone }}
-                        {% if medico.phone.phone %}
-                        <a href="https://web.whatsapp.com/send?phone={{ medico.phone.phone }}" id="whatsapp-link" target="_blank">
+                        {{ doctor.phone.format_doctor_phone }}
+                        {% if doctor.phone.phone %}
+                        <a href="https://web.whatsapp.com/send?phone={{ doctor.phone.phone }}" id="whatsapp-link" target="_blank">
                             <i class="fa-brands fa-whatsapp" id="fa-whatsapp"></i>
                         </a>
                         {% else %}

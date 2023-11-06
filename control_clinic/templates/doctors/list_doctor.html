@@ -1,0 +1,50 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Empleado {{ doctor.firstname }}</title>{% endblock title %}
+{% block content %}
+<section>
+  {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+  {% include "partials/_messages.html" %}
+  <div class="container-sm mt-3">
+    <h2 class="text-center">Datos de {{ doctor.firstname }} {{ doctor.lastname }}</h2>
+    <form>
+
+      <div class="form-group">
+        <label for="firstname">Primer nombre</label>
+        <input type="text" class="form-control" id="firstname" name="firstname" autocomplete="off" value="{{ doctor.firstname }}"
+          autocapitalize="words" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Apellido</label>
+        <input type="text" class="form-control" id="lastname" name="lastname"  autocomplete="off" value="{{ doctor.lastname }}"
+          autocapitalize="words" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" value="{{ doctor.email }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="phone">Especialidad</label>
+        <input type="text" class="form-control"  autocomplete="off" value="{{ doctor.specialty }}" readonly>
+      </div>
+      <div class="form-group">
+        <label for="phone">Teléfono móvil</label>
+        <input type="text" class="form-control" id="phone" name="phone"  autocomplete="off" value="{{ doctor.phone.format_doctor_phone }}" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Registrado en</label>
+        <input type="text" class="form-control"  autocomplete="off" value="{{ doctor.created_at }}"
+          autocapitalize="words" readonly>
+      </div>
+
+      <a href="{{ url_for('update_doctor', id=doctor.id) }}" class="btn btn-success">Atualizar datos</a>
+      <a href="{{ url_for('list_doctors') }}" class="btn btn-info">Volver sin actualizar</a>
+
+    </form>
+  </div>
+</section>
+{% endblock content %}
