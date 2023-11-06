@@ -1,70 +1,87 @@
 {% extends "forms/base.html" %}
-
-{% block title %}<title>Paciente</title>{% endblock title %}
+{% block title %}<title>Actualizar cliente {{ patient.firstname }}</title>{% endblock title %}
 {% block content %}
 <section>
-    {% include "forms/_navbar-register.html" %}
+  {% include "forms/_navbar-register.html" %}
 </section>
 <section>
-    <div class="container-sm text-center mb-2">
-        <h3>Buscar paciente por número de documento</h3>
-        <form class="form-inline my-2 my-lg-0" action="{{ url_for('search_patient') }}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    
-            <input class="form-control mr-sm-2" type="search" name="document" placeholder="Documento" autocomplete="off" aria-label="Search" oninput="convertToUpperCase(this)">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
-    </div>
-</section>
-<section>
-    <div class="container-sm">
-        <table class="table mt-2">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Documento</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Teléfono</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for paciente in pacientes %}
-                <tr>
-                    <th scope="row">{{ paciente.id }}</th>
-                    <td>{{ paciente.firstname }}</td>
-                    <td>{{ paciente.lastname }}</td>
-                    <th scope="row">{{ paciente.document }}</th>
-                    <td>{{ paciente.email }}
-                        <a href="mailto:{{ paciente.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>
-                    </td>
-                    <td>
-                        {{ paciente.phone.format_patient_phone }}
-                        {% if paciente.phone.phone %}
-                        <a href="https://web.whatsapp.com/send?phone={{ paciente.phone.phone }}" id="whatsapp-link" target="_blank">
-                            <i class="fa-brands fa-whatsapp" id="fa-whatsapp"></i>
-                        </a>
-                        {% else %}
-                        No informado
-                        {% endif %}
-                    </td>
-                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Editar</button>
-                </tr>
-                {% endfor %}
-            </tbody>            
-        </table>
-        {% include "partials/_messages.html" %}
-    </div>
-</section>
+  {% include "partials/_messages.html" %}
+  <div class="container-sm mt-3">
+    <h2 class="text-center">Actualizar cliente {{ patient.firstname }}</h2>
+    <form action="{{ url_for('update_patient', id=patient.id) }}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {{ form.hidden_tag() }}
 
-{% block scripts %}
+      <div class="form-group">
+        <label for="firstname">Primer nombre</label>
+        <input type="text" class="form-control" id="firstname" name="firstname"  autocomplete="off" value="{{ patient.firstname }}"
+          autocapitalize="words">
+        {% if form.firstname.errors %}
+        <ul class="errors">
+          {% for error in form.firstname.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
 
-{% endblock scripts %}
-<script>
-    function convertToUpperCase(inputElement) {
-        inputElement.value = inputElement.value.toUpperCase();
-    }
-</script>
-    
+      <div class="form-group">
+        <label for="lastname">Apellido</label>
+        <input type="text" class="form-control" id="lastname" name="lastname"  autocomplete="off" value="{{ patient.lastname }}"
+          autocapitalize="words">
+        {% if form.lastname.errors %}
+        <ul class="errors">
+          {% for error in form.lastname.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <label for="birtday">Cumpleaños</label>
+        <input type="date" class="form-control" id="birtday" name="birtday" value="{{ patient.birtday }}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="sex">Sexo</label>
+        <select class="form-control" id="sex" name="sex">
+          <option value="{{ patient.sex }}">{{ patient.sex }}</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Femenino</option>
+          <option value="outros">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="name_father">Apellido paterno</label>
+        <input type="text" class="form-control" id="name_father" name="name_father" value="{{ patient.name_father }}" autocomplete="off" autocapitalize="words">
+      </div>
+      <div class="form-group">
+        <label for="name_mather">Apellido materno</label>
+        <input type="text" class="form-control" id="name_mather" name="name_mather" value="{{ patient.name_mather }}" autocomplete="off" autocapitalize="words">
+      </div>
+      <div class="form-group">
+        <label for="document">Documento</label>
+        <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}" autocomplete="off" autocapitalize="no">
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"  value="{{ patient.email }}">
+        {% if form.email.errors %}
+        <ul class="errors">
+          {% for error in form.email.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Teléfono móvil</label>
+        <input type="text" class="form-control" id="phone" name="phone"  autocomplete="off" value="{{ patient.phone.phone }}">
+      </div>
+
+      <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
+    </form>
+  </div>
+</section>
 {% endblock content %}

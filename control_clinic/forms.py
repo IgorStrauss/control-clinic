@@ -43,6 +43,34 @@ class EmployeeForm(FlaskForm):
     )
 
 
+class EmployeeUpdateForm(FlaskForm):
+    firstname = StringField(
+        "Primer nombre",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    lastname = StringField(
+        "Apellido",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    email = StringField(
+        "E-mail",
+        validators=[
+            Email("Endereço de e-mail inválido."),
+        ],
+    )
+    phone = StringField(
+        "Teléfono móvil",
+        validators=[
+            Length(min=10, max=15,
+                   message="Mínimo 10 caracteres, máximo 15 caracteres"),
+        ],
+    )
+
+
 class SpecialtyForm(FlaskForm):
     name = StringField(
         "Especialidad",
@@ -159,4 +187,91 @@ class DoctorForm(FlaskForm):
     )
     specialty = StringField(
         "specialty", validators=[DataRequired("Este campo é obrigatório.")]
+    )
+
+
+class DoctorUpdateForm(FlaskForm):
+    firstname = StringField(
+        "firstname",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    lastname = StringField(
+        "lastname",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    email = StringField(
+        "email",
+        validators=[
+            Email("Endereço de e-mail inválido."),
+        ],
+    )
+    register = StringField(
+        "register",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    phone = StringField(
+        "phone",
+        validators=[
+            Length(min=10, max=15,
+                   message="Mínimo 10 caracteres, máximo 15 caracteres"),
+        ],
+    )
+    specialty = StringField()
+
+
+class PatientUpdateForm(FlaskForm):
+    firstname = StringField(
+        "Primer nombre",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    lastname = StringField(
+        "Apellido",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres"),
+        ],
+    )
+    birtday = StringField(
+        "fecha de nacimiento",
+        validators=[],
+    )
+    sex = StringField("Sexo", validators=[
+    ])
+    name_father = StringField(
+        "Apellido paterno",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres")
+        ],
+    )
+    name_mather = StringField(
+        "Apellido materno",
+        validators=[
+            Length(min=3, max=45, message="Mínimo 3 caractere, máximo 45 caracteres")
+        ],
+    )
+    document = StringField(
+        "Documento",
+        validators=[
+            Length(min=4, message="Mínimo 4 caracteres"),
+        ],
+    )
+    email = StringField(
+        "email",
+        validators=[
+            Email("Endereço de e-mail inválido."),
+        ],
+    )
+    phone = StringField(
+        "phone",
+        validators=[
+            Length(min=10, max=15,
+                   message="Mínimo 10 caracteres, máximo 15 caracteres"),
+        ],
     )

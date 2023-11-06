@@ -7,7 +7,7 @@
 </section>
 <section>
     <div class="container-sm text-center">
-    <h3>Lista de empeleados</h3>
+    <h3 class="mt-1">Lista de empeleados</h3>
     </div>
 </section>
 <section>
@@ -25,7 +25,7 @@
             <tbody>
                 {% for employee in employees %}
                 <tr>
-                    <th scope="row">{{ employee.id }}</th>
+                    <th scope="row"><a  href="{{ url_for('list_employee', id=employee.id) }}" class="btn btn-success">{{ employee.id }}</a></th>
                     <td>{{ employee.firstname }}</td>
                     <td>{{ employee.lastname }}</td>
                     <td>{{ employee.email }}
