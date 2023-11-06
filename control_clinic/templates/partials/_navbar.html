@@ -16,9 +16,14 @@
           </a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="{{ url_for('register_patient') }}">Registro de cliente</a>
+            <a class="dropdown-item" href="{{ url_for('search_patient') }}">Actualizar registro de cliente</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ url_for('register_patient') }}">Entrada al procedimiento</a>
             <a class="dropdown-item" href="{{ url_for('register_doctor') }}">Paciente de regreso</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{ url_for('register_employee') }}">Historia clínica del paciente</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ url_for('list_patients') }}">Lista de clientes</a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: 0.5rem">
@@ -26,9 +31,12 @@
             R H
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{ url_for('register_specialty') }}">Especialidad</a>
-            <a class="dropdown-item" href="{{ url_for('register_doctor') }}">Medico</a>
-            <a class="dropdown-item" href="{{ url_for('register_employee') }}">Empleado</a>
+            <a class="dropdown-item" href="{{ url_for('register_specialty') }}">Registrar Especialidad</a>
+            <a class="dropdown-item" href="{{ url_for('register_doctor') }}">Registrar Medico</a>
+            <a class="dropdown-item" href="{{ url_for('register_employee') }}">Registrar Empleado</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ url_for('list_medicos') }}">Lista de medicos</a>
+            <a class="dropdown-item" href="{{ url_for('list_employees') }}">Lista de empleados</a>  
           </div>
         </li>
         <li class="nav-item" style="margin-left: 0.5rem">

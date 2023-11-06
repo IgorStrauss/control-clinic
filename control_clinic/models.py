@@ -31,11 +31,15 @@ class Employees(db.Model):
 class Employee_phone(db.Model):
     __tablename__ = "employee_phone"
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Integer, default=000)
+    phone = db.Column(db.String(14), default=000)
     employee_id = db.Column(db.ForeignKey("employee.id"), nullable=False)
 
     def __str__(self):
         return self.phone
+
+    @property
+    def format_employee_phone(self):
+        return f"({self.phone[:3]}) {self.phone[3:7]}-{self.phone[7:]}"
 
 
 class Doctor(db.Model):
@@ -67,11 +71,15 @@ class Doctor(db.Model):
 class Doctor_phone(db.Model):
     __tablename__ = "doctor_phone"
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Integer, default=000)
+    phone = db.Column(db.String(14), default=000)
     doctor_id = db.Column(db.ForeignKey("doctor.id"), nullable=False)
 
     def __str__(self):
         return self.phone
+
+    @property
+    def format_doctor_phone(self):
+        return f"({self.phone[:3]}) {self.phone[3:7]}-{self.phone[7:]}"
 
 
 class Doctor_specialty(db.Model):
@@ -134,8 +142,12 @@ class Patient(db.Model):
 class Patient_phone(db.Model):
     __tablename__ = "patient_phone"
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Integer, default=000)
+    phone = db.Column(db.String(14), default=000)
     patient_id = db.Column(db.ForeignKey("patient.id"), nullable=False)
 
     def __str__(self):
         return self.phone
+
+    @property
+    def format_patient_phone(self):
+        return f"({self.phone[:3]}) {self.phone[3:7]}-{self.phone[7:]}"

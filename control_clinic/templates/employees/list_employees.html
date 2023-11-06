@@ -1,0 +1,51 @@
+{% extends "forms/base.html" %}
+
+{% block title %}<title>Listar empeleados</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    <div class="container-sm text-center">
+    <h3>Lista de empeleados</h3>
+    </div>
+</section>
+<section>
+    <div class="container-sm">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                <tr>
+                    <th scope="row">{{ employee.id }}</th>
+                    <td>{{ employee.firstname }}</td>
+                    <td>{{ employee.lastname }}</td>
+                    <td>{{ employee.email }}
+                        <a href="mailto:{{ employee.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
+                    </td>
+                    <td>
+                        {{ employee.phone.format_employee_phone }}
+                        {% if employee.phone.phone %}
+                        <a href="https://web.whatsapp.com/send?phone={{ employee.phone.phone }}" id="whatsapp-link" target="_blank">
+                            <i class="fa-brands fa-whatsapp" id="fa-whatsapp"></i>
+                        </a>
+                        {% else %}
+                        No informado
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+              
+    </div>
+</section>
+{% endblock content %}
