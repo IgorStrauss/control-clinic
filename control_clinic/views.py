@@ -1,4 +1,5 @@
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, render_template, request, url_for
+from sqlalchemy import desc
 from werkzeug.security import generate_password_hash
 
 from .forms import DoctorForm, EmployeeForm, PatientForm, SpecialtyForm
@@ -58,10 +59,7 @@ def init_app(app):
     @app.route("/listar/funcionarios", endpoint="list_employees")
     def list_employees():
         employees = Employees.query.all()
-        return render_template(
-            "employees/list_employees.html",
-            employees=employees
-        )
+        return render_template("employees/list_employees.html", employees=employees)
 
     @app.route("/cadastro/medico", methods=["GET", "POST"], endpoint="register_doctor")
     def register_doctor():
@@ -106,6 +104,11 @@ def init_app(app):
         return render_template(
             "forms/register-doctor.html", specialidads=specialidads, form=form
         )
+
+    @app.route("/listar/medicos", endpoint="list_medicos")
+    def list_medicos():
+        medicos = Doctor.query.all()
+        return render_template("doctors/list_medicos.html", medicos=medicos)
 
     @app.route(
         "/cadastro/especialidade",
@@ -185,3 +188,21 @@ def init_app(app):
                     "error",
                 )
         return render_template("forms/register-patient.html", form=form)
+
+    @app.route("/listar/pacientes", endpoint="list_patients")
+    def list_patients():
+        pacientes = Patient.query.order_by(desc(Patient.id)).all()
+        return render_template("patients/list_patients.html", pacientes=pacientes)
+
+    @app.route("/buscar/paciente", methods=["GET", "POST"], endpoint="search_patient")
+    def search_patient():
+        if request.method == "POST":
+            documento = request.form.get("document")
+            pacientes = Patient.query.filter(
+                Patient.document == documento).all()
+            if not pacientes:
+                flash("Cliente no localizado con este número de documento", "info")
+        else:
+            pacientes = []
+
+        return render_template("patients/update_patient.html", pacientes=pacientes)

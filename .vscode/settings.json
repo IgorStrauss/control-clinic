@@ -8,7 +8,7 @@
     "editor.rulers": [
         79
     ],
-    "workbench.colorTheme": "OM Theme (Default Dracula Italic)",
+    "workbench.colorTheme": "Default Dark Modern",
     "workbench.iconTheme": "material-icon-theme",
     "code-runner.executorMap": {
         "python": "clear ; python -u"

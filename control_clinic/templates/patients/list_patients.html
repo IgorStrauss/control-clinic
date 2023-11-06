@@ -1,14 +1,14 @@
 {% extends "forms/base.html" %}
 
-{% block title %}<title>Listar empeleados</title>{% endblock title %}
+{% block title %}<title>Listar pacientes</title>{% endblock title %}
 {% block content %}
 <section>
     {% include "forms/_navbar-register.html" %}
 </section>
 <section>
-    <div class="container-sm text-center">
-    <h3>Lista de empeleados</h3>
-    </div>
+    <div class="container-sm text-center mb-2">
+    <h3>Lista de clientes</h3>
+</div>
 </section>
 <section>
     <div class="container-sm">
@@ -18,23 +18,25 @@
                     <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Apellido</th>
+                    <th scope="col">Documento</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Teléfono</th>
                 </tr>
             </thead>
             <tbody>
-                {% for employee in employees %}
+                {% for paciente in pacientes %}
                 <tr>
-                    <th scope="row">{{ employee.id }}</th>
-                    <td>{{ employee.firstname }}</td>
-                    <td>{{ employee.lastname }}</td>
-                    <td>{{ employee.email }}
-                        <a href="mailto:{{ employee.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
+                    <th scope="row">{{ paciente.id }}</th>
+                    <td>{{ paciente.firstname }}</td>
+                    <td>{{ paciente.lastname }}</td>
+                    <th scope="row">{{ paciente.document }}</th>
+                    <td>{{ paciente.email }}
+                        <a href="mailto:{{ paciente.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>                        
                     </td>
                     <td>
-                        {{ employee.phone.format_employee_phone }}
-                        {% if employee.phone.phone %}
-                        <a href="https://web.whatsapp.com/send?phone={{ employee.phone.phone }}" id="whatsapp-link" target="_blank">
+                        {{ paciente.phone.format_patient_phone }}
+                        {% if paciente.phone.phone %}
+                        <a href="https://web.whatsapp.com/send?phone={{ paciente.phone.phone }}" id="whatsapp-link" target="_blank">
                             <i class="fa-brands fa-whatsapp" id="fa-whatsapp"></i>
                         </a>
                         {% else %}
