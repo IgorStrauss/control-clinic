@@ -7,7 +7,11 @@ from flask_wtf.csrf import CSRFProtect
 
 from . import views
 from .admin_service import admin
+from .controller import clients, doctors, employees
 from .models import db
+
+# from control_clinic.views import views
+
 
 Migrate()
 CSRFProtect()
@@ -30,6 +34,9 @@ def create_app():
         raise ValueError('FLASK_ENV inválido')
 
     views.init_app(app)
+    employees.init_app(app)
+    doctors.init_app(app)
+    clients.init_app(app)
 
     db.init_app(app)
     admin.init_app(app)
