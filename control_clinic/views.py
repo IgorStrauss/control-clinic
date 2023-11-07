@@ -14,6 +14,10 @@ def init_app(app):
     def index():
         return render_template("base.html")
 
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template("error_404.html"), 404
+
     @app.route(
         "/cadastro/funcionario", methods=["GET", "POST"], endpoint="register_employee"
     )
