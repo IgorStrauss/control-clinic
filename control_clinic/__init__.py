@@ -5,10 +5,11 @@ from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 
+from control_clinic.models import db
+
 from . import views
 from .admin_service import admin
 from .controller import clients, doctors, employees
-from .models import db
 
 # from control_clinic.views import views
 

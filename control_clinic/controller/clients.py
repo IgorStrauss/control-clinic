@@ -2,7 +2,8 @@ from flask import flash, redirect, render_template, request, url_for
 from sqlalchemy import desc
 
 from control_clinic.forms import PatientForm, PatientUpdateForm
-from control_clinic.models import Patient, Patient_phone, db
+from control_clinic.models import db
+from control_clinic.models.patients import Patient, Patient_phone
 
 
 def init_app(app):

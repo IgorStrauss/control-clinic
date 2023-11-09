@@ -2,7 +2,9 @@ from flask import flash, redirect, render_template, url_for
 from werkzeug.security import generate_password_hash
 
 from control_clinic.forms import DoctorForm, DoctorUpdateForm, SpecialtyForm
-from control_clinic.models import Doctor, Doctor_phone, Doctor_specialty, db
+from control_clinic.models import db
+from control_clinic.models.doctors import (Doctor, Doctor_phone,
+                                           Doctor_specialty)
 
 
 def init_app(app):
