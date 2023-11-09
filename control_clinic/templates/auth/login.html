@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.101.0">
+  <title>MarquesIgor - Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{url_for('static', filename='css/signin.css' )}}">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+
+  <!-- Custom styles for this template -->
+  <link href="signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+  <div>
+    <form class="form-signin">
+      <img class="mb-4" src="{{url_for('static', filename= 'images/logo-maig-02.png')}}" alt="" width="92" height="92">
+      <h1 class="h3 mb-3 font-weight-normal">Acceso</h1>
+      <label for="inputEmail" class="sr-only">correo electrónico</label>
+      <input type="email" name="email" id="email" class="form-control" placeholder="correo electrónico" required
+        autofocus autocomplete="off">
+      <label for="inputPassword" class="sr-only">Contraseña</label>
+      <input type="password" name="password" id="password" class="form-control mt-1" placeholder="Contraseña" required
+        pattern=".{8,}" title="La contraseña debe tener al menos 8 caracteres">
+
+      <!-- Dropdown button for role selection -->
+      <div class="btn-group mb-3">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Accede como:
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#" onclick="setRole('colaborador')">Colaborador</a>
+          <a class="dropdown-item" href="#" onclick="setRole('medico')">Médico</a>
+        </div>
+      </div>
+
+      <button class="btn btn-lg btn-primary  mb-1 custom-btn" type="submit" id="submitBtn">Entre aquí</button>
+      <span><a href="">¿Olvidé la contraseña?</a></span>
+      <p id="currentYear" class="mt-5 mb-3 text-muted">&copy; 2022<span id="year"></span></p>
+    </form>
+  </div>
+  {% include "partials/_scripts.html" %}
+  <script>
+    // Atualizar o ano atual
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Função para definir o papel escolhido
+    function setRole(role) {
+      #TODO: logica para acessar de acordo com a função
+      // Adicione lógica aqui para lidar com a seleção do papel
+      // Você pode redirecionar para diferentes páginas com base no papel escolhido
+      console.log('Papel escolhido:', role);
+    }
+  </script>
+
+  <script>
+    document.getElementById('submitBtn').addEventListener('click', function (event) {
+      var selectedRole = document.querySelector('.btn-group .btn-secondary').textContent.trim();
+      if (selectedRole === 'Accede como:') {
+        event.preventDefault(); // Impede o envio do formulário
+        alert('Por favor seleccione una opción de inicio de sesión.'); // Exibe um aviso ao usuário
+      }
+    });
+
+    // Função para definir o papel escolhido
+    function setRole(role) {
+      document.querySelector('.btn-group .btn-secondary').textContent = role;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -9,7 +9,7 @@ from control_clinic.models import db
 
 from . import views
 from .admin_service import admin
-from .controller import clients, doctors, employees
+from .controller import clients, doctors, employees, signin
 
 # from control_clinic.views import views
 
@@ -38,6 +38,7 @@ def create_app():
     employees.init_app(app)
     doctors.init_app(app)
     clients.init_app(app)
+    signin.init_app(app)
 
     db.init_app(app)
     admin.init_app(app)
