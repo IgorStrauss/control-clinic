@@ -1,11 +1,17 @@
 from flask_admin import Admin
 
+from control_clinic.models import db
+# from control_clinic.models import (Doctor, Doctor_phone, Doctor_specialty, Employee_phone,
+#                      Employees, Patient, Patient_phone, db)
+from control_clinic.models.doctors import (Doctor, Doctor_phone,
+                                           Doctor_specialty)
+from control_clinic.models.employees import Employee_phone, Employees
+from control_clinic.models.patients import Patient, Patient_phone
+
 from .admin_views import (DoctorModelView, DoctorPhoneModelView,
                           DoctorSpecialtyModelView, EmployeeModelView,
                           EmployeesPhoneModelView, PatientModelView,
                           PatientPhoneModelView)
-from .models import (Doctor, Doctor_phone, Doctor_specialty, Employee_phone,
-                     Employees, Patient, Patient_phone, db)
 
 admin = Admin()
 
