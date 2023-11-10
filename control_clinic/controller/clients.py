@@ -1,4 +1,5 @@
 from flask import flash, redirect, render_template, request, url_for
+from flask_login import login_required
 from sqlalchemy import desc
 
 from control_clinic.forms import PatientForm, PatientUpdateForm
@@ -10,6 +11,7 @@ def init_app(app):
     @app.route(
         "/cadastro/cliente", methods=["GET", "POST"], endpoint="register_patient"
     )
+    @login_required
     def register_patient():
         form = PatientForm()
         if form.validate_on_submit():
@@ -53,16 +55,19 @@ def init_app(app):
         return render_template("forms/register-patient.html", form=form)
 
     @app.route("/listar/clientes", endpoint="list_patients")
+    @login_required
     def list_patients():
         patients = Patient.query.order_by(desc(Patient.id)).all()
         return render_template("patients/list_patients.html", patients=patients)
 
     @app.route("/listar/cliente/<int:id>", endpoint="list_patient")
+    @login_required
     def list_patient(id):
         patient = Patient.query.get_or_404(id)
         return render_template("patients/list_patient.html", patient=patient)
 
     @app.route("/buscar/cliente", methods=["GET", "POST"], endpoint="search_patient")
+    @login_required
     def search_patient():
         if request.method == "POST":
             documento = request.form.get("document")
@@ -76,6 +81,7 @@ def init_app(app):
         return render_template("patients/search_patient.html", patients=patients)
 
     @app.route("/atualizar/cliente/<int:id>", methods=["GET", "POST"], endpoint="update_patient")
+    @login_required
     def update_patient(id):
         form = PatientUpdateForm()
         patient = Patient.query.get_or_404(id)

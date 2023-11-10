@@ -1,4 +1,5 @@
 from flask import flash, redirect, render_template, url_for
+from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
 from control_clinic.forms import DoctorForm, DoctorUpdateForm, SpecialtyForm
@@ -9,6 +10,7 @@ from control_clinic.models.doctors import (Doctor, Doctor_phone,
 
 def init_app(app):
     @app.route("/cadastro/medico", methods=["GET", "POST"], endpoint="register_doctor")
+    @login_required
     def register_doctor():
         specialidads = Doctor_specialty.query.all()
         form = DoctorForm()
@@ -25,7 +27,7 @@ def init_app(app):
                         firstname=form.firstname.data.upper(),
                         lastname=form.lastname.data.upper(),
                         email=form.email.data,
-                        register=form.register.data,
+                        register=form.register.data.upper(),
                         password=generate_password_hash(form.password.data),
                         specialty=form.specialty.data,
                     )
@@ -53,6 +55,7 @@ def init_app(app):
         )
 
     @app.route("/listar/medico/<int:id>", endpoint="list_doctor")
+    @login_required
     def list_doctor(id):
         doctor = Doctor.query.get_or_404(id)
         return render_template("doctors/list_doctor.html", doctor=doctor)
@@ -60,6 +63,7 @@ def init_app(app):
     @app.route(
         "/atualizar/medico/<int:id>", methods=["GET", "POST"], endpoint="update_doctor"
     )
+    @login_required
     def update_doctor(id):
         form = DoctorUpdateForm()
         doctor = Doctor.query.get_or_404(id)
@@ -75,13 +79,11 @@ def init_app(app):
             if form.email.data:
                 doctor.email = form.email.data
             if form.register.data:
-                doctor.register = form.register.data
+                doctor.register = form.register.data.upper()
 
-            # Atualize a especialidade do médico se um novo valor for selecionado no formulário
             if form.specialty.data:
                 doctor.specialty = form.specialty.data
 
-            # Atualize o número de telefone se um novo número for fornecido no formulário
             if form.phone.data:
                 doctor_phone.phone = form.phone.data
 
@@ -111,6 +113,7 @@ def init_app(app):
         )
 
     @app.route("/listar/medicos", endpoint="list_doctors")
+    @login_required
     def list_medicos():
         doctors = Doctor.query.all()
         return render_template("doctors/list_doctors.html", doctors=doctors)
@@ -120,6 +123,7 @@ def init_app(app):
         methods=["GET", "POST"],
         endpoint="register_specialty",
     )
+    @login_required
     def register_specialty():
         form = SpecialtyForm()
         if form.validate_on_submit():

@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from flask_login import UserMixin
+
 from . import db
 
 
-class Doctor(db.Model):
+class Doctor(db.Model, UserMixin):
     __tablename__ = "doctor"
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(

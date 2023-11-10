@@ -18,6 +18,7 @@ email-validator = "^2.1.0.post1"
 flask-admin = "^1.6.1"
 flask-bootstrap = "^3.3.7.1"
 passlib = "^1.7.4"
+flask-login = "^0.6.3"
 
 
 [build-system]

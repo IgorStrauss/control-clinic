@@ -1,4 +1,5 @@
 from flask import flash, redirect, render_template, url_for
+from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
 from control_clinic.forms import EmployeeForm, EmployeeUpdateForm
@@ -10,6 +11,7 @@ def init_app(app):
     @app.route(
         "/cadastro/funcionario", methods=["GET", "POST"], endpoint="register_employee"
     )
+    @login_required
     def register_employee():
         """Register employee with form"""
         form = EmployeeForm()
@@ -52,11 +54,13 @@ def init_app(app):
         return render_template("forms/register-employee.html", form=form)
 
     @app.route("/listar/funcionarios", endpoint="list_employees")
+    @login_required
     def list_employees():
         employees = Employees.query.all()
         return render_template("employees/list_employees.html", employees=employees)
 
     @app.route("/listar/funcionario/<int:id>", endpoint="list_employee")
+    @login_required
     def list_employee(id):
         employee = Employees.query.get_or_404(id)
         return render_template("employees/list_employee.html", employee=employee)
@@ -66,6 +70,7 @@ def init_app(app):
         methods=["GET", "POST"],
         endpoint="update_employee",
     )
+    @login_required
     def update_employee(id):
         form = EmployeeUpdateForm()
         employee = Employees.query.get_or_404(id)

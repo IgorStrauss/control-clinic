@@ -172,6 +172,21 @@ Flask = ">=0.8"
 visitor = "*"
 
 [[package]]
+name = "flask-login"
+version = "0.6.3"
+description = "User authentication and session management for Flask."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "Flask-Login-0.6.3.tar.gz", hash = "sha256:5e23d14a607ef12806c699590b89d0f0e0d67baeec599d75947bf9c147330333"},
+    {file = "Flask_Login-0.6.3-py3-none-any.whl", hash = "sha256:849b25b82a436bf830a054e74214074af59097171562ab10bfa999e6b78aae5d"},
+]
+
+[package.dependencies]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
+
+[[package]]
 name = "flask-migrate"
 version = "4.0.5"
 description = "SQLAlchemy database migrations for Flask applications using Alembic."
@@ -636,4 +651,4 @@ email = ["email-validator"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "ab44aedafeb1d8fbb35a2164376c170892ddaafeaf8ecad147b0c9587d446bcd"
+content-hash = "47ec528aa864daacfb6f3eac7b5e85f44814f7306d7773d4d5a65c00b2523e6a"
