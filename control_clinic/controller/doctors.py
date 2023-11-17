@@ -2,17 +2,19 @@ from flask import flash, redirect, render_template, url_for
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
-from control_clinic.forms import DoctorForm, DoctorUpdateForm, SpecialtyForm
+from control_clinic.forms.doctors_form import (DoctorForm, DoctorUpdateForm,
+                                               SpecialtyForm)
+from control_clinic.forms.medical_exams_form import MedicalExamForm
 from control_clinic.models import db
-from control_clinic.models.doctors import (Doctor, Doctor_phone,
-                                           Doctor_specialty)
+from control_clinic.models.doctors import Doctor, DoctorPhone, DoctorSpecialty
+from control_clinic.models.medical_records_model import MedicalExam
 
 
 def init_app(app):
     @app.route("/cadastro/medico", methods=["GET", "POST"], endpoint="register_doctor")
     @login_required
     def register_doctor():
-        specialidads = Doctor_specialty.query.all()
+        specialidads = DoctorSpecialty.query.all()
         form = DoctorForm()
 
         if form.validate_on_submit():
@@ -34,7 +36,7 @@ def init_app(app):
                     db.session.add(doctor)
                     db.session.commit()
 
-                    phone = Doctor_phone(
+                    phone = DoctorPhone(
                         phone=form.phone.data,
                         doctor=doctor,
                     )
@@ -69,7 +71,7 @@ def init_app(app):
         doctor = Doctor.query.get_or_404(id)
         doctor_phone = doctor.phone
         doctor_specialty = doctor.specialty
-        specialidads = Doctor_specialty.query.all()
+        specialidads = DoctorSpecialty.query.all()
 
         if form.validate_on_submit():
             if form.firstname.data:
@@ -96,10 +98,8 @@ def init_app(app):
         form.email.data = doctor.email
         form.register.data = doctor.register
 
-        # Preenche o campo de especialidade com o valor atual
         form.specialty.data = doctor_specialty
 
-        # Preenche o campo de telefone com o número de telefone atual
         if doctor_phone:
             form.phone.data = doctor_phone.phone
 
@@ -128,13 +128,13 @@ def init_app(app):
         form = SpecialtyForm()
         if form.validate_on_submit():
             try:
-                existing_specialty = Doctor_specialty.query.filter_by(
+                existing_specialty = DoctorSpecialty.query.filter_by(
                     name=form.name.data
                 ).first()
                 if existing_specialty:
                     flash("La especialidad ya existe.", "error")
                 else:
-                    specialty = Doctor_specialty(
+                    specialty = DoctorSpecialty(
                         name=form.name.data.upper(),
                     )
                     print(form.name.data)
@@ -152,3 +152,29 @@ def init_app(app):
                 )
 
         return render_template("forms/register-specialty.html", form=form)
+
+    @app.route("/cadastro/exame", methods=["GET", "POST"], endpoint="register_exam")
+    def register_exam():
+        form = MedicalExamForm()
+        if form.validate_on_submit():
+            try:
+                medical_exam = MedicalExam(
+                    exam=form.exam.data.upper(),
+                    description=form.description.data,
+                )
+
+                db.session.add(medical_exam)
+                db.session.commit()
+
+                flash("Exame registrado con exito!", "success")
+                return redirect(url_for("index"))
+
+            except Exception as e:
+                db.session.rollback()
+                for error_message in e.args:
+                    print(error_message)
+                flash(
+                    "Error al intentar registrarme.",
+                    "error",
+                )
+        return render_template("forms/register-exams.html", form=form)

@@ -27,6 +27,7 @@
                     <th scope="col">Documento</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Teléfono</th>
+                    <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +50,16 @@
                         No informado
                         {% endif %}
                     </td>
+                    <td>
+                        {% if not patient.medical_record %}
+                            <form method="post" action="{{ url_for('create_medical_record', patient_id=patient.id) }}" style="display: inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-primary">Abrir Prontuário</button>
+                            </form>
+                            {% else %}
+                            <btn>Iniciar atendimento </btn>
+                        {% endif %}
+                    </td>
                     <a  href="{{ url_for('update_patient', id=patient.id) }}" class="btn btn-outline-warning">Editar</a>
                 </tr>
                 {% endfor %}
@@ -57,6 +68,7 @@
         {% include "partials/_messages.html" %}
     </div>
 </section>
+
 
 {% block scripts %}
 

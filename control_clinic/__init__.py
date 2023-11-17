@@ -12,7 +12,8 @@ from control_clinic.models.employees import Employees
 
 from . import views
 from .admin_service import admin
-from .controller import clients, doctors, employees, signin
+from .controller import (clients, doctors, employees, medical_records_view,
+                         signin)
 from .controller.medical_records import initial_page
 
 login_manager = LoginManager()
@@ -62,6 +63,7 @@ def create_app():
     clients.init_app(app)
     signin.init_app(app)
     initial_page.init_app(app)
+    medical_records_view.init_app(app)
 
     db.init_app(app)
     admin.init_app(app)

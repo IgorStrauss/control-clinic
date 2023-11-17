@@ -21,13 +21,13 @@ class Employees(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(64), nullable=False)
     phone = db.relationship(
-        "Employee_phone", backref="employee", uselist=False)
+        "EmployeePhone", backref="employee", uselist=False)
 
     def __str__(self):
         return self.firstname
 
 
-class Employee_phone(db.Model):
+class EmployeePhone(db.Model):
     __tablename__ = "employee_phone"
     id = db.Column(db.Integer, primary_key=True)
     phone = db.Column(db.String(14), default=000)
