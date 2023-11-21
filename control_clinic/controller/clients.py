@@ -90,13 +90,25 @@ def init_app(app):
     @login_required
     def list_patients():
         patients = Patient.query.order_by(desc(Patient.id)).all()
-        return render_template("patients/list_patients.html", patients=patients)
+        medical_records_dict = {
+            record.patient_id: record.id for record in MedicalRecords.query.all()
+        }
+        return render_template(
+            "patients/list_patients.html",
+            patients=patients,
+            medical_records_dict=medical_records_dict,
+        )
 
     @app.route("/listar/cliente/<int:id>", endpoint="list_patient")
     @login_required
     def list_patient(id):
         patient = Patient.query.get_or_404(id)
-        return render_template("patients/list_patient.html", patient=patient)
+        medical_record = MedicalRecords.query.filter_by(
+            patient_id=patient.id).first()
+
+        return render_template(
+            "patients/list_patient.html", patient=patient, medical_record=medical_record
+        )
 
     @app.route("/buscar/cliente", methods=["GET", "POST"], endpoint="search_patient")
     @login_required
@@ -191,4 +203,8 @@ def init_app(app):
         medical_record = MedicalRecords.query.filter_by(
             patient_id=patient.id).first()
 
-        return render_template("patients/list_medical_record.html", patient=patient, medical_record=medical_record)
+        return render_template(
+            "patients/list_medical_record.html",
+            patient=patient,
+            medical_record=medical_record,
+        )
