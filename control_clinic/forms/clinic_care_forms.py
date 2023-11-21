@@ -84,11 +84,6 @@ class ClinicCareForm(FlaskForm):
     )
     laboratory_results = StringField(
         "laboratory_results",
-        validators=[
-            DataRequired("Este campo é obrigatório."),
-            Length(min=10, max=255,
-                   message="Mínimo 10 caracteres, máximo 255 caracteres"),
-        ]
     )
     initial_report = StringField(
         "initial_report",
