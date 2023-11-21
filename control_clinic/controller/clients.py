@@ -4,6 +4,7 @@ from sqlalchemy import desc
 
 from control_clinic.forms.patients_form import PatientForm, PatientUpdateForm
 from control_clinic.models import db
+from control_clinic.models.medical_records_model import MedicalRecords
 from control_clinic.models.patients import (Patient, PatientAddress,
                                             PatientPhone)
 
@@ -183,3 +184,11 @@ def init_app(app):
         return render_template(
             "patients/update_patient.html", form=form, patient=patient
         )
+
+    @app.route("/listar/prontuario/paciente/<int:id>", endpoint="list_medical_records")
+    def list_medical_records(id):
+        patient = Patient.query.get_or_404(id)
+        medical_record = MedicalRecords.query.filter_by(
+            patient_id=patient.id).first()
+
+        return render_template("patients/list_medical_record.html", patient=patient, medical_record=medical_record)

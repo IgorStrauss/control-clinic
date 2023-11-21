@@ -25,7 +25,8 @@ class Doctor(db.Model, UserMixin):
         db.DateTime, onupdate=datetime.now, server_default=db.func.now()
     )
     phone = db.relationship("DoctorPhone", backref="doctor", uselist=False)
-    specialty = db.Column(db.ForeignKey("doctor_specialty.id"), nullable=False)
+    specialty = db.Column(db.ForeignKey(
+        "doctor_specialty.id"), nullable=False)
 
     def __str__(self):
         return self.firstname

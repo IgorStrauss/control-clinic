@@ -86,23 +86,22 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="consumes_alcohol">Consome bebida alcoolica</label>
-            <input type="text" class="form-control" id="consumes_alcohol" name="consumes_alcohol"
-            {% if patient.consumes_alcohol %}value="Sim" {% else %}value="Não"{% endif %}
-              autocomplete="off" readonly>
+            <input type="text" class="form-control" id="consumes_alcohol" name="consumes_alcohol" {% if
+              patient.consumes_alcohol %}value="Sim" {% else %}value="Não" {% endif %} autocomplete="off" readonly>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="smoker">Fumante</label>
-            <input type="text" class="form-control" id="smoker" name="smoker"
-              {% if patient.smoker %}value="Sim"{% else %}value="Não"{% endif %} readonly>
+            <input type="text" class="form-control" id="smoker" name="smoker" {% if patient.smoker %}value="Sim" {% else
+              %}value="Não" {% endif %} readonly>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="drug_user">Usuário de drogas</label>
-            <input type="drug_user" class="form-control" id="drug_user" name="drug_user"
-            {% if patient.drug_user %}value="Sim"{% else %}value="Não"{% endif %} readonly>
+            <input type="drug_user" class="form-control" id="drug_user" name="drug_user" {% if patient.drug_user
+              %}value="Sim" {% else %}value="Não" {% endif %} readonly>
           </div>
         </div>
       </div>
@@ -112,131 +111,127 @@
           <div class="form-group">
             <label for="chronic_disease">Enfermedad crónica</label>
             <input type="text" class="form-control" id="chronic_disease" name="chronic_disease"
-            value="{{ patient.chronic_disease }}"
-            autocomplete="off" readonly>
+              value="{{ patient.chronic_disease }}" autocomplete="off" readonly>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="controlled_medicine">Usa remedio controlado</label>
             <input type="text" class="form-control" id="controlled_medicine" name="controlled_medicine"
-            value="{{ patient.controlled_medicine }}" readonly>
+              value="{{ patient.controlled_medicine }}" readonly>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="allergies">Alergias</label>
-            <input type="drug_user" class="form-control" id="allergies" name="allergies"
-            value="{{ patient.allergies }}" readonly>
-          </div>
-        </div>
-      </div>
-            <!--Contatos de Emergencia-->
-            <div class="row mt-4 pt-2" style="border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc"">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="reference_telephone">Telefone para emergência</label>
-                  <input type="text" class="form-control" id="reference_telephone" name="reference_telephone"
-                    value="{{ patient.format_patient_reference_phone  }}" autocomplete="off" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="reference_contact">Pessoa para emergência</label>
-                  <input type="text" class="form-control" id="reference_contact" name="reference_contact"
-                    value="{{ patient.reference_contact }}" readonly>
-                </div>
-              </div>
-            </div>
-            <!--Nomes dos pais-->
-            <div class="row" style="border-bottom: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="name_mather">Apellido materno</label>
-                  <input type="text" class="form-control" id="name_mather" name="name_mather"
-                    value="{{ patient.name_mather }}" autocomplete="off" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="name_father">Apellido paterno</label>
-                  <input type="text" class="form-control" id="name_father" name="reference_contact"
-                    value="{{ patient.name_father }}" readonly>
-                </div>
-              </div>
-            </div>
-      
-      <!--Endereço-->
-      <div class="row mt-4 pt-2" style="border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="address">Direccion</label>
-            <input type="text" class="form-control" id="address" name="address" value="{{ patient.address }}"
-              autocomplete="off" readonly>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <label for="number">Numero</label>
-            <input type="text" class="form-control" id="number" name="number" value="{{ patient.address.number }}"
-              readonly>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="complement">Complementar</label>
-            <input type="text" class="form-control" id="complement" name="complement" value="{{ patient.address.complement }}"
+            <input type="drug_user" class="form-control" id="allergies" name="allergies" value="{{ patient.allergies }}"
               readonly>
           </div>
         </div>
       </div>
-      <div class="row" style="border-bottom: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="neighborhood">Vecindario</label>
-            <input type="text" class="form-control" id="neighborhood" name="neighborhood" value="{{ patient.address.neighborhood }}"
-              autocomplete="off" readonly>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <label for="city">Ciudad</label>
-            <input type="text" class="form-control" id="city" name="city" value="{{ patient.address.city }}"
-              readonly>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-group">
-            <label for="state">Estado</label>
-            <input type="text" class="form-control" id="state" name="state" value="{{ patient.address.state }}"
-              readonly>
-          </div>
+      <!--Contatos de Emergencia-->
+      <div class="row mt-4 pt-2"
+        style="border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc"">
+              <div class=" col-md-6">
+        <div class="form-group">
+          <label for="reference_telephone">Telefone para emergência</label>
+          <input type="text" class="form-control" id="reference_telephone" name="reference_telephone"
+            value="{{ patient.format_patient_reference_phone  }}" autocomplete="off" readonly>
         </div>
       </div>
-<!--Documento e registrado-->
-<div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="document">Documento</label>
-      <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}"
-        autocomplete="off" readonly>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="reference_contact">Pessoa para emergência</label>
+          <input type="text" class="form-control" id="reference_contact" name="reference_contact"
+            value="{{ patient.reference_contact }}" readonly>
+        </div>
+      </div>
+  </div>
+  <!--Nomes dos pais-->
+  <div class="row" style="border-bottom: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="name_mather">Apellido materno</label>
+        <input type="text" class="form-control" id="name_mather" name="name_mather" value="{{ patient.name_mather }}"
+          autocomplete="off" readonly>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="name_father">Apellido paterno</label>
+        <input type="text" class="form-control" id="name_father" name="reference_contact"
+          value="{{ patient.name_father }}" readonly>
+      </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="created_at">Registrado en</label>
-      <input type="text" class="form-control" id="created_at" name="created_at" value="{{ patient.formatted_created_at }}"
-        readonly>
+
+  <!--Endereço-->
+  <div class="row mt-4 pt-2"
+    style="border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="address">Direccion</label>
+        <input type="text" class="form-control" id="address" name="address" value="{{ patient.address }}"
+          autocomplete="off" readonly>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="number">Numero</label>
+        <input type="text" class="form-control" id="number" name="number" value="{{ patient.address.number }}" readonly>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="complement">Complementar</label>
+        <input type="text" class="form-control" id="complement" name="complement"
+          value="{{ patient.address.complement }}" readonly>
+      </div>
     </div>
   </div>
-</div>
+  <div class="row" style="border-bottom: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="neighborhood">Vecindario</label>
+        <input type="text" class="form-control" id="neighborhood" name="neighborhood"
+          value="{{ patient.address.neighborhood }}" autocomplete="off" readonly>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="city">Ciudad</label>
+        <input type="text" class="form-control" id="city" name="city" value="{{ patient.address.city }}" readonly>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="state">Estado</label>
+        <input type="text" class="form-control" id="state" name="state" value="{{ patient.address.state }}" readonly>
+      </div>
+    </div>
+  </div>
+  <!--Documento e registrado-->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="document">Documento</label>
+        <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}"
+          autocomplete="off" readonly>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="created_at">Registrado en</label>
+        <input type="text" class="form-control" id="created_at" name="created_at"
+          value="{{ patient.formatted_created_at }}" readonly>
+      </div>
+    </div>
+  </div>
 
+  <a href="{{ url_for('update_patient', id=patient.id) }}" class="btn btn-success">Atualizar datos</a>
+  <a href="{{ url_for('list_patients') }}" class="btn btn-info">Volver sin actualizar</a>
 
-
-      <a href="{{ url_for('update_patient', id=patient.id) }}" class="btn btn-success">Atualizar datos</a>
-      <a href="{{ url_for('list_patients') }}" class="btn btn-info">Volver sin actualizar</a>
-
-    </form>
+  </form>
   </div>
 </section>
 {% endblock content %}

@@ -1,11 +1,18 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, StringField
+from wtforms import (FieldList, FloatField, FormField, IntegerField,
+                     SelectMultipleField, StringField)
 from wtforms.validators import DataRequired, Length
 
 
 class ClinicCareForm(FlaskForm):
-    medical_records_id = IntegerField(
+    medical_rec_id = IntegerField(
         "medical_records_id",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+        ]
+    )
+    patient_id = IntegerField(
+        "patient_id",
         validators=[
             DataRequired("Este campo é obrigatório."),
         ]
@@ -16,39 +23,40 @@ class ClinicCareForm(FlaskForm):
             DataRequired("Este campo é obrigatório."),
         ]
     )
-    exams = IntegerField(
-        "medical_exams",
+    selected_exams = SelectMultipleField(
+        "exams",
+        choices=[],
+        coerce=int
     )
-    bood_pressure = StringField(
-        "bood_pressure",
+    blood_pressure = StringField(
+        "blood_pressure",
         validators=[
             DataRequired("Este campo é obrigatório."),
-            Length(min=3, max=45, message="Mínimo 2 caractere, máximo 10 caracteres"),
         ]
     )
-    heart_rate = StringField(
+    heart_rate = FloatField(
         "heart_rate",
         validators=[
             DataRequired("Este campo é obrigatório."),
-            Length(min=2, max=45, message="Mínimo 2 caractere, máximo 10 caracteres"),
         ]
     )
     respiratory_frequency = StringField(
         "respiratory_frequency",
     )
-    temperature = StringField(
+    temperature = FloatField(
         "temperature",
         validators=[
             DataRequired("Este campo é obrigatório."),
-            Length(min=2, max=45, message="Mínimo 2 caractere, máximo 10 caracteres"),
         ]
     )
-    weight = StringField(
+    weight = FloatField(
         "weight",
         validators=[
             DataRequired("Este campo é obrigatório."),
-            Length(min=2, max=45, message="Mínimo 2 caractere, máximo 10 caracteres"),
         ]
+    )
+    length = FloatField(
+        "length",
     )
     diagnosis = StringField(
         "diagnosis",
@@ -64,5 +72,29 @@ class ClinicCareForm(FlaskForm):
             DataRequired("Este campo é obrigatório."),
             Length(min=10, max=255,
                    message="Mínimo 25 caracteres, máximo 255 caracteres"),
+        ]
+    )
+    doctors_prescription = StringField(
+        "doctors_prescription",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+            Length(min=10, max=255,
+                   message="Mínimo 10 caracteres, máximo 255 caracteres"),
+        ]
+    )
+    laboratory_results = StringField(
+        "laboratory_results",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+            Length(min=10, max=255,
+                   message="Mínimo 10 caracteres, máximo 255 caracteres"),
+        ]
+    )
+    initial_report = StringField(
+        "initial_report",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+            Length(min=10, max=255,
+                   message="Mínimo 10 caracteres, máximo 255 caracteres"),
         ]
     )

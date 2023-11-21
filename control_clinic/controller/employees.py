@@ -14,6 +14,7 @@ def init_app(app):
     )
     # @login_required
     # TODO: definir login_required
+    # TODO: Definir regra que se tiver logado, redirecionar para index
     def register_employee():
         """Register employee with form"""
         form = EmployeeForm()

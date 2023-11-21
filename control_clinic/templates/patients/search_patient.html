@@ -51,13 +51,13 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if not patient.medical_record %}
+                        {% if not patient.medical_records %}
                             <form method="post" action="{{ url_for('create_medical_record', patient_id=patient.id) }}" style="display: inline;">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <button type="submit" class="btn btn-primary">Abrir Prontuário</button>
+                                <button type="submit" class="btn btn-primary">Abrir Prontuário</button> 
                             </form>
                             {% else %}
-                            <btn>Iniciar atendimento </btn>
+                            <span>Iniciar atendimento</span>
                         {% endif %}
                     </td>
                     <a  href="{{ url_for('update_patient', id=patient.id) }}" class="btn btn-outline-warning">Editar</a>

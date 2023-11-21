@@ -7,13 +7,17 @@ from control_clinic.models.patients import Patient
 
 
 def init_app(app):
-    @app.route("/create_medical_record/<int:patient_id>", methods=["POST"], endpoint="create_medical_record")
+    @app.route(
+        "/create_medical_record/<int:patient_id>",
+        methods=["POST", "GET"],
+        endpoint="create_medical_record",
+    )
     @login_required
     def create_medical_record(patient_id):
         patient = Patient.query.get_or_404(patient_id)
 
         # Verifica se o paciente já possui um prontuário
-        if patient.medical_record:
+        if MedicalRecords.query.filter_by(patient_id=patient.id).first() is not None:
             flash("Este paciente já possui um prontuário.", "info")
             return redirect(url_for("index"))
 
@@ -24,9 +28,12 @@ def init_app(app):
         flash("Prontuário criado com sucesso.", "success")
         return redirect(url_for("index"))
 
-    @app.route("/view_medical_record/<int:id>", methods=["GET"], endpoint="view_medical_record")
+    @app.route(
+        "/view_medical_record/<int:id>", methods=["GET"], endpoint="view_medical_record"
+    )
     @login_required
     def view_medical_record(id):
         ...
         # medical_record = MedicalRecords.query.get_or_404(id)
         # return render_template("forms/medical-records.html", medical_record=medical_record)
+        # TODO: Implementar a visualização do prontuário apos criar o Atendimento

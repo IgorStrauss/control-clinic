@@ -51,10 +51,9 @@ class Patient(db.Model):
         lazy="joined",
         cascade="all, delete-orphan",
     )
-    medical_record = db.relationship(
+    medical_records = db.relationship(
         "MedicalRecords",
-        back_populates="patient",
-        uselist=False,
+        backref="patient",
         lazy="joined",
         cascade="all, delete-orphan",
     )
