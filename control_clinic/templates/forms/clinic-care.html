@@ -1,0 +1,206 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Iniciar Atendimento</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+
+<section>
+    {% include "partials/_messages.html" %}
+    <div class="container-sm mt-3">
+      <h4 class="text-center">Paciente {{ patient.firstname }} {{ patient.lastname }} - Consulta </h4>
+      <form class="mb-3">
+  
+        <!--Nome, sobrenome e RH-->
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="firstname">Primer nombre</label>
+              <input type="text" class="form-control" id="firstname" name="firstname" value="{{ patient.firstname }}"
+                autocomplete="off" readonly>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="lastname">Apellido</label>
+              <input type="text" class="form-control" id="lastname" name="lastname" value="{{ patient.lastname }}"
+                readonly>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="document">Documento</label>
+              <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}"
+                readonly>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="medical_rec_id">Prontuário</label>
+              <input type="text" class="form-control" id="medical_rec_id" name="medical_rec_id" value="{{ medical_record.id }}"
+                readonly>
+            </div>
+          </div>
+
+        </div>
+      </form>
+      <form class="mt-3" action="{{ url_for('start_clinic_care', id=patient.id) }}" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          {{ form.hidden_tag() }}
+  
+        <!--Prontuario ID hidden-->
+        <input type="hidden" name="medical_rec_id" id="medical_rec_id" value="{{ medical_record.id }}">
+        <input type="hidden" name="patient_id" id="patient_id" value="{{ patient.id }}">
+        <!--Medicos-->
+        <div class="form-group">
+          <label for="doctor_id">Medico</label>
+          <select class="form-control" id="doctor_id" name="doctor_id">
+            <option value="">Selecione o medico</option>
+            {% for doctor in doctors %}
+            <option value="{{ doctor.id }}">{{ doctor }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <!--Triagem linha 1-->
+        <div class="row" style="border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+          <div class="col-md-4 mt-3">
+            <div class="form-group">
+              <label for="blood_pressure">Presión arterial</label>
+              <input type="text" class="form-control" id="blood_pressure" name="blood_pressure" value="{{ blood_pressure }}"
+                autocomplete="off" >
+            </div>
+          </div>
+          <div class="col-md-4 mt-3">
+            <div class="form-group">
+              <label for="heart_rate">Ritmo cardiaco</label>
+              <input type="number" class="form-control" id="heart_rate" name="heart_rate" value="{{ heart_rate }}"
+                >
+            </div>
+          </div>
+          <div class="col-md-4 mt-3">
+            <div class="form-group">
+              <label for="respiratory_frequency">Frecuencia respiratoria</label>
+              <input type="text" class="form-control" id="respiratory_frequency" name="respiratory_frequency" value="{{ respiratory_frequency }}"
+                >
+            </div>
+          </div>
+        </div>
+          <!--Triagem linha 2-->
+          <div class="row" style="border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="weight">Peso</label>
+                <input type="number" class="form-control" id="weight" name="weight" value="{{ weight }}"
+                  autocomplete="off" >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="length">Comprimento - Tamanho</label>
+                <input type="number" class="form-control" id="length" name="length" value="{{ length }}"
+                  >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="temperature">Temperatura</label>
+                <input type="number" class="form-control" id="temperature" name="temperature" value="{{ temperature }}"
+                  >
+              </div>
+            </div>
+          </div>
+          <!--Reclamacao do paciente-->
+          <div class="row" style="border-bottom: 1px solid #ccc ;border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+          <div class="col-md-12">
+          <div class="form-group">
+            <label for="initial_report">Descrição do paciente</label>
+            <input type="text" class="form-control" id="initial_report" name="initial_report" value="{{ initial_report }}">
+            {% if form.initial_report.errors %}
+            <ul class="errors">
+              {% for error in form.initial_report.errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}    
+          </div>
+          </div>
+          </div>
+        <!--Diagnostico medico-->
+        <div class="form-group mt-3">
+          <label for="diagnosis">Diagnóstico medico</label>
+          <input type="text" class="form-control" id="diagnosis" name="diagnosis" value="{{ diagnosis }}">
+          {% if form.diagnosis.errors %}
+          <ul class="errors">
+            {% for error in form.diagnosis.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}    
+        </div>
+        <!--Tratamento-->
+        <div class="form-group">
+          <label for="treatment">Tratamiento</label>
+          <input type="text" class="form-control" id="treatment" name="treatment" value="{{ treatment }}">
+          {% if form.treatment.errors %}
+          <ul class="errors">
+            {% for error in form.treatment.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}    
+        </div>
+        <!--Exames-->
+        <!--<div class="form-group">
+          <label for="exams">Exames</label>
+          <select class="form-control" id="exams" name="exams">
+            <option value="">Selecione o exame</option>
+            {% for exam in exams %}
+            <option value="{{ exam.id }}">{{ exam }}</option>
+            {% endfor %}
+          </select>
+        </div>   -->
+        <div class="form-group">
+          <label for="selected_exams">Exames</label>
+          <select class="form-control" id="selected_exams" name="selected_exams">
+              <option value="">Selecione o exame</option>
+              {% for exam in exams %}
+                  <option value="{{ exam.id }}">{{ exam.exam }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      <!-- Campos adicionais para novos exames -->
+      <!--<div id="additional-exams-container" style="border: 2px solid #000;">-->
+          <!-- Este container será preenchido dinamicamente com campos para novos exames 
+      </div>
+      <button type="button" onclick="addAdditionalExamField()" style="margin-top:10px">Adicionar + Exame</button>-->
+
+        <!--Resultados de laboratorio-->
+        <div class="form-group">
+          <label for="laboratory_results">Resultados de examen</label>
+          <input type="text" class="form-control" id="laboratory_results" name="laboratory_results" value="{{ laboratory_results }}">
+          {% if form.laboratory_results.errors %}
+          <ul class="errors">
+            {% for error in form.laboratory_results.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}    
+        </div>
+        <!--Resultados de laboratorio-->
+        <div class="form-group">
+          <label for="doctors_prescription">Prescripción médica</label>
+          <input type="text" class="form-control" id="doctors_prescription" name="doctors_prescription" value="{{ doctors_prescription }}">
+          {% if form.doctors_prescription.errors %}
+          <ul class="errors">
+            {% for error in form.doctors_prescription.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}    
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Registrar</button>
+      </form>
+      {% block scripts %}
+      {% include "partials/_scripts.html" %}
+    {% endblock scripts %} 
+  {% endblock %}

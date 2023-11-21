@@ -1,0 +1,18 @@
+{% extends "forms/base.html" %}
+
+{% block title %}<title>Prontuario xx</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+
+<section>
+    <h2>Nome {{ patient.firstname }}</h2><br>
+    <h4>Prontuario nr. {{ medical_record.id }}</h4><br>
+    <h4>Endereço rua. {{ patient.address.address }}</h4><br>
+    <h4>Fone. {{ patient.phone }}</h4><br>
+    <h4>Prontuario nr. {{ patient.address }}</h4>
+
+</section>
+
+{% endblock %}

@@ -24,14 +24,15 @@ class Doctor(db.Model, UserMixin):
     updated_at = db.Column(
         db.DateTime, onupdate=datetime.now, server_default=db.func.now()
     )
-    phone = db.relationship("Doctor_phone", backref="doctor", uselist=False)
-    specialty = db.Column(db.ForeignKey("doctor_specialty.id"), nullable=False)
+    phone = db.relationship("DoctorPhone", backref="doctor", uselist=False)
+    specialty = db.Column(db.ForeignKey(
+        "doctor_specialty.id"), nullable=False)
 
     def __str__(self):
         return self.firstname
 
 
-class Doctor_phone(db.Model):
+class DoctorPhone(db.Model):
     __tablename__ = "doctor_phone"
     id = db.Column(db.Integer, primary_key=True)
     phone = db.Column(db.String(14), default=000)
@@ -45,7 +46,7 @@ class Doctor_phone(db.Model):
         return f"({self.phone[:3]}) {self.phone[3:7]}-{self.phone[7:]}"
 
 
-class Doctor_specialty(db.Model):
+class DoctorSpecialty(db.Model):
     __tablename__ = "doctor_specialty"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(90), unique=True,

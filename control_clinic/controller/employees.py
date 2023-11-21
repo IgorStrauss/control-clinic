@@ -2,16 +2,19 @@ from flask import flash, redirect, render_template, url_for
 from flask_login import login_required
 from werkzeug.security import generate_password_hash
 
-from control_clinic.forms import EmployeeForm, EmployeeUpdateForm
+from control_clinic.forms.employees_form import (EmployeeForm,
+                                                 EmployeeUpdateForm)
 from control_clinic.models import db
-from control_clinic.models.employees import Employee_phone, Employees
+from control_clinic.models.employees import EmployeePhone, Employees
 
 
 def init_app(app):
     @app.route(
         "/cadastro/funcionario", methods=["GET", "POST"], endpoint="register_employee"
     )
-    @login_required
+    # @login_required
+    # TODO: definir login_required
+    # TODO: Definir regra que se tiver logado, redirecionar para index
     def register_employee():
         """Register employee with form"""
         form = EmployeeForm()
@@ -34,7 +37,7 @@ def init_app(app):
                     db.session.commit()
 
                     # Adicionando telefone
-                    phone = Employee_phone(
+                    phone = EmployeePhone(
                         phone=form.phone.data,
                         employee=employee,
                     )
@@ -42,7 +45,7 @@ def init_app(app):
                     db.session.commit()
 
                     flash("Empleado registrado exitosamente!", "success")
-                    return redirect(url_for("index"))
+                    return redirect(url_for("login"))
             except Exception as e:
                 db.session.rollback()
                 for error_message in e.args:
