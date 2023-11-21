@@ -1,0 +1,70 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Atendimentos {{ patient.firstname }}</title>{% endblock title %}
+{% block content %}
+<section>
+  {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    {% include "partials/_messages.html" %}
+    <div class="container-sm mt-3">
+      <h2 class="text-center">Atendimentos clinicos</h2>
+</section>
+{% if not medical_record %}
+<section>
+    <div class="container-lg text-center">
+    <h2 class="py-2">Não há prontuário para este paciente</h2>
+    <h3 class="py-2">Retornar a página para iniciar atendimento</h3>
+    <a href="{{ url_for('start__clinic_care_patient') }}" style="font-size: 25px; ">Voltar</a>
+    </div>
+</section>
+{% else %}
+<section>
+<div class="container-lg">
+      <!--Nome, sobrenome e RH-->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="firstname">Primer nombre</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" value="{{ patient.firstname }}"
+              autocomplete="off" readonly>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="lastname">Apellido</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" value="{{ patient.lastname }}"
+              readonly>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label for="medical_record">Prontuário</label>
+            <input type="text" class="form-control"  value="{{ medical_record.id }}"
+              readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<section>
+    <div class="container-lg">
+        <div class="row">
+            {% for care in clinic_care_list %}
+            <!-- Adicione outros campos que você deseja exibir para cada atendimento clínico -->
+
+            <div class="col-md-8 mb-3">
+                <input type="text" class="form-control" value="ATENDIMENTO CLÍNICO ID: {{ care.id }}" readonly>
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" value="{{ care.formatted_clinic_care_created_at }}" readonly>
+            </div>
+            <div class="col-md-1">
+                <a class="btn btn-block btn-dark">View</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -99,3 +99,18 @@ def init_app(app):
             doctors=doctors,
             exams=exams,
         )
+
+    @app.route("/listar/atendimentos/paciente/<int:id>", endpoint="list_clinic_care")
+    def list_clinic_care(id):
+        patient = Patient.query.get_or_404(id)
+        clinic_care_list = ClinicCare.query.filter_by(
+            patient_id=patient.id).all()
+        medical_record = MedicalRecords.query.filter_by(
+            patient_id=patient.id).first()
+
+        return render_template(
+            "patients/list_clinic_care.html",
+            patient=patient,
+            clinic_care_list=clinic_care_list,
+            medical_record=medical_record
+        )

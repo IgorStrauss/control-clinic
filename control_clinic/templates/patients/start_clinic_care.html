@@ -27,7 +27,8 @@
                     <th scope="col">Documento</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Teléfono</th>
-                    <th scope="col">Ações</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -57,9 +58,14 @@
                                 <button type="submit" class="btn btn-info">Abrir Prontuário</button> 
                             </form>
                             {% else %}
-                            <a class="btn btn-primary" href="{{ url_for('start_clinic_care', id=patient.id) }}">Iniciar atendimento</a>
+                            <a class="btn btn-primary mx-0" href="{{ url_for('start_clinic_care', id=patient.id) }}">Iniciar atendimento</a>
                         {% endif %}
                     </td>
+                    {% if patient.medical_records %}
+                    <td>
+                        <a class="btn btn-info mx-0" href="{{ url_for('list_clinic_care', id=patient.id) }}">Histórico</a>
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>            

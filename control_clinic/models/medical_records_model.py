@@ -77,3 +77,10 @@ class ClinicCare(db.Model):
 
     def __str__(self):
         return str(self.medical_record_id)
+
+    @property
+    def formatted_clinic_care_created_at(self):
+        return (
+            self.created_at.strftime(
+                "%d/%m/%Y %H:%M:%S") if self.created_at else None
+        )
