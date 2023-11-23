@@ -57,6 +57,12 @@ class Patient(db.Model):
         lazy="joined",
         cascade="all, delete-orphan",
     )
+    clinical_care = db.relationship(
+        "ClinicCare",
+        backref="patient_records",
+        lazy="joined",
+        cascade="all, delete-orphan",
+    )
     created_at = db.Column(
         db.DateTime, default=datetime.now, server_default=db.func.now()
     )

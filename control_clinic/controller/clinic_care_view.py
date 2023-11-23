@@ -100,7 +100,11 @@ def init_app(app):
             exams=exams,
         )
 
-    @app.route("/listar/atendimentos/paciente/<int:id>", endpoint="list_clinic_care")
+    @app.route(
+        "/listar/atendimentos/paciente/<int:id>",
+        methods=["GET"],
+        endpoint="list_clinic_care",
+    )
     def list_clinic_care(id):
         patient = Patient.query.get_or_404(id)
         clinic_care_list = ClinicCare.query.filter_by(
@@ -112,5 +116,20 @@ def init_app(app):
             "patients/list_clinic_care.html",
             patient=patient,
             clinic_care_list=clinic_care_list,
-            medical_record=medical_record
+            medical_record=medical_record,
+        )
+
+    @app.route(
+        "/detalhes/atendimento/paciente/consulta/<int:id>",
+        methods=["GET"],
+        endpoint="clinic_care_id",
+    )
+    def view_clinic_care(id):
+        clinic_care = ClinicCare.query.get_or_404(id)
+        patient = Patient.query.get_or_404(clinic_care.patient_id)
+
+        return render_template(
+            "patients/view_clinic_care.html",
+            clinic_care=clinic_care,
+            patient=patient
         )

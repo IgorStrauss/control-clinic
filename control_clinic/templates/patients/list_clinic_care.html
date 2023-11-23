@@ -50,8 +50,6 @@
     <div class="container-lg">
         <div class="row">
             {% for care in clinic_care_list %}
-            <!-- Adicione outros campos que você deseja exibir para cada atendimento clínico -->
-
             <div class="col-md-8 mb-3">
                 <input type="text" class="form-control" value="ATENDIMENTO CLÍNICO ID: {{ care.id }}" readonly>
             </div>
@@ -59,7 +57,7 @@
                 <input type="text" class="form-control" value="{{ care.formatted_clinic_care_created_at }}" readonly>
             </div>
             <div class="col-md-1">
-                <a class="btn btn-block btn-dark">View</a>
+                <a class="btn btn-block btn-dark" href="{{ url_for('clinic_care_id', id=care.id) }}">View</a>
             </div>
             {% endfor %}
         </div>
