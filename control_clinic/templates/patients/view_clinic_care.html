@@ -1,0 +1,159 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Atendimentos {{ patient.firstname }}</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    {% include "partials/_messages.html" %}
+    <div class="container-sm mt-3">
+        <h2 class="text-center">Atendimentos clinicos</h2>
+</section>
+<div class="container-lg">
+    <!--Nome, sobrenome e RH-->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="firstname">Nombre</label>
+                <input type="text" class="form-control" value="{{ patient.firstname }} {{ patient.lastname }}"
+                    autocomplete="off" readonly>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="">Status da consulta</label>
+                {% if clinic_care.in_service %}
+                <input type="text" class="form-control" value="Aberta" readonly>
+                {% else %}
+                <input type="text" class="form-control" value="Finalizada" readonly>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="">Consulta ID</label>
+                <input type="text" class="form-control" value="{{ clinic_care.id }}" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Linha 2-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-lg-12">
+            <label>Descrição do paciente</label>
+            <textarea type="text" class="form-control" readonly>{{ clinic_care.initial_report }}</textarea>
+        </div>
+    </div>
+</div>
+<!--Linha 3-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="firstname" style="margin-top: 5px;">Pressão sanguinea</label>
+                <input type="text" class="form-control" value="{{ clinic_care.blood_pressure }}" readonly>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="" style="margin-top: 5px;">Batimento cardíaco</label>
+                <input type="text" class="form-control" value="{{ clinic_care.heart_rate }}" readonly>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="" style="margin-top: 5px;">Frequência respiratória</label>
+                <input type="text" class="form-control" value="{{ clinic_care.respiratory_frequency }}" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Linha 4-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Peso</label>
+                <input type="text" class="form-control" value="{{ clinic_care.weight }} Kg" readonly>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Altura</label>
+                <input type="text" class="form-control" value="{{ clinic_care.length }} cm" readonly>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Temperatura</label>
+                <input type="text" class="form-control" value="{{ clinic_care.temperature }} C" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Linha 5-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-lg-12">
+            <label>Diagnóstico médico</label>
+            <textarea type="text" class="form-control" readonly>{{ clinic_care.diagnosis }}</textarea>
+        </div>
+    </div>
+</div>
+<!--Linha 6-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-lg-12">
+            <label style="margin-top: 5px;">Tratamento médico</label>
+            <textarea type="text" class="form-control" readonly>{{ clinic_care.treatment }}</textarea>
+        </div>
+    </div>
+</div>
+<!--Linha 7-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-lg-12">
+            <label style="margin-top: 5px;">Prescrição médica - Receita</label>
+            <textarea type="text" class="form-control" readonly>{{ clinic_care.doctors_prescription }}</textarea>
+        </div>
+    </div>
+</div>
+<!--Linha 8-->
+<div class="container-lg">
+    <div class="row">
+        <div class="col-lg-12">
+            <label style="margin-top: 5px;">Resultados de exames</label>
+            <textarea type="text" class="form-control" readonly>{{ clinic_care.laboratory_results }}</textarea>
+        </div>
+    </div>
+</div>
+</section>
+
+<section>
+    <div class="container-lg">
+        {% for exam in clinic_care.medical_exams %}
+        <div class="row">
+            <div class="col-lg-4 mb-5">
+                <label style="margin-top: 5px;">Exame</label>
+                <input type="text" class="form-control" value="{{ exam.exam }}" readonly>
+            </div>
+            <div class="col-lg-1 mb-5">
+                <label style="margin-top: 5px;">Cod.</label>
+                <input type="text" class="form-control" readonly value="{{ exam.id }}">
+            </div>
+
+            <div class="col-lg-7 mb-5">
+                <label style="margin-top: 5px;">Descrição</label>
+                <input type="text" class="form-control" readonly value="{{ exam.description }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<section>
+    <div class="container-lg">
+        <a href="{{ url_for('list_clinic_care', id=patient.id) }}" class="btn btn-block btn-dark mb-5">Voltar</a>
+    </div>
+</section>
+{% endblock %}

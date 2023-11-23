@@ -11,7 +11,8 @@ from control_clinic.models.patients import (Patient, PatientAddress,
 
 def init_app(app):
     @app.route(
-        "/cadastro/cliente", methods=["GET", "POST"], endpoint="register_patient"
+        "/cadastro/cliente", methods=["GET", "POST"],
+        endpoint="register_patient"
     )
     @login_required
     def register_patient():
@@ -90,13 +91,26 @@ def init_app(app):
     @login_required
     def list_patients():
         patients = Patient.query.order_by(desc(Patient.id)).all()
-        return render_template("patients/list_patients.html", patients=patients)
+        medical_records_dict = {
+            record.patient_id: record.id for record in MedicalRecords.query.all()
+        }
+        return render_template(
+            "patients/list_patients.html",
+            patients=patients,
+            medical_records_dict=medical_records_dict,
+        )
 
     @app.route("/listar/cliente/<int:id>", endpoint="list_patient")
     @login_required
     def list_patient(id):
         patient = Patient.query.get_or_404(id)
-        return render_template("patients/list_patient.html", patient=patient)
+        medical_record = MedicalRecords.query.filter_by(
+            patient_id=patient.id).first()
+
+        return render_template(
+            "patients/list_patient.html",
+            patient=patient, medical_record=medical_record
+        )
 
     @app.route("/buscar/cliente", methods=["GET", "POST"], endpoint="search_patient")
     @login_required
@@ -110,7 +124,8 @@ def init_app(app):
         else:
             patients = []
 
-        return render_template("patients/search_patient.html", patients=patients)
+        return render_template("patients/search_patient.html",
+                               patients=patients)
 
     @app.route(
         "/atualizar/cliente/<int:id>",
@@ -185,10 +200,15 @@ def init_app(app):
             "patients/update_patient.html", form=form, patient=patient
         )
 
-    @app.route("/listar/prontuario/paciente/<int:id>", endpoint="list_medical_records")
+    @app.route("/listar/prontuario/paciente/<int:id>",
+               endpoint="list_medical_records")
     def list_medical_records(id):
         patient = Patient.query.get_or_404(id)
         medical_record = MedicalRecords.query.filter_by(
             patient_id=patient.id).first()
 
-        return render_template("patients/list_medical_record.html", patient=patient, medical_record=medical_record)
+        return render_template(
+            "patients/list_medical_record.html",
+            patient=patient,
+            medical_record=medical_record,
+        )

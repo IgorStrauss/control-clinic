@@ -21,7 +21,7 @@
                     <th scope="col">Documento</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Teléfono</th>
-                    <th scope="col">Prontuario</th>
+                    <th scope="col" style="text-align: center;">Prontuario</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +44,13 @@
                         No informado
                         {% endif %}
                     </td>
-                    <td> medi id </td>
+                    <td style="text-align: center; color: red; font-size: 18px">
+                        {% if patient.id in medical_records_dict %}
+                            {{ medical_records_dict[patient.id] }}
+                        {% else %}
+                            Nenhum registro médico
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

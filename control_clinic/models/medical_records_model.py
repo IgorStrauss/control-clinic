@@ -52,6 +52,7 @@ class ClinicCare(db.Model):
         MedicalRecords.id), nullable=False)
     doctor_id = db.Column(db.ForeignKey(Doctor.id), nullable=False)
     patient_id = db.Column(db.ForeignKey(Patient.id), nullable=False)
+    patient = db.relationship("Patient", backref="clinical_care_records")
     medical_exams = db.relationship(
         MedicalExam, secondary="clinical_care_medical_exams", lazy="dynamic", backref="clinical_care"
     )
@@ -77,3 +78,10 @@ class ClinicCare(db.Model):
 
     def __str__(self):
         return str(self.medical_record_id)
+
+    @property
+    def formatted_clinic_care_created_at(self):
+        return (
+            self.created_at.strftime(
+                "%d/%m/%Y %H:%M:%S") if self.created_at else None
+        )

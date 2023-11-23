@@ -7,7 +7,7 @@
 <section>
   {% include "partials/_messages.html" %}
   <div class="container-sm mt-3">
-    <h2 class="text-center">Datos de {{ patient.firstname }} {{ patient.lastname }}</h2>
+    <h2 class="text-center">Datos de {{ patient.firstname }} {{ patient.lastname }} {% if medical_record.id %} Prontuario: {{ medical_record.id }}{% else %} Não tem prontuário {% endif %}</h2>
     <form class="mb-3">
 
       <!--Nome, sobrenome e RH-->
