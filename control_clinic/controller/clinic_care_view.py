@@ -133,3 +133,22 @@ def init_app(app):
             clinic_care=clinic_care,
             patient=patient
         )
+
+    @app.route(
+        "/listar/historico/atendimento/paciente",
+        methods=["GET", "POST"],
+        endpoint="historical__clinic_care_patient",
+    )
+    @login_required
+    def historical_clinic_care_patient_search():
+        """Lista historico de pacientes medicante consulta por numero de documento"""
+        if request.method == "POST":
+            documento = request.form.get("document")
+            patients = Patient.query.filter(
+                Patient.document == documento).all()
+            if not patients:
+                flash("Cliente no localizado con este número de documento", "info")
+        else:
+            patients = []
+
+        return render_template("patients/historical_clinic_care.html", patients=patients)
