@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}<title>Control-Clinic</title>{% endblock title %}
+{% block content %}
+<section>
+  {% include "partials/_navbar.html" %}
+</section>
+<section>
+  {% include "partials/_messages.html" %}
+  <div class="container-sm mt-3">
+    <h2 class="text-center">Index</h2>
+</section>
+<section class="container-md" style="border: 1px solid blue;">
+  <div class="row">
+    <div class="col-md-5" style="border: 1px solid red;">
+      <h1 class="text-center">Consultas abertas</h1>
+      <table class="table table-bordered border-primary" id="div-01-in-service">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Documento</th>
+            <th scope="col">Data</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for consult in clinic_care %}
+            {% if consult.in_service %}
+            <tr class="table-group-divider">
+              <th scope="row"><a href="{{ url_for('clinic_care_id', id=consult.id) }}" target="_blank">{{ consult.id }}</a></th>
+              <td>{{ consult.patient.firstname }}</td>
+              <td>{{ consult.patient.document }}</td>
+              <td>{{ consult.formatted_clinic_care_created_at }}</td>
+              <td><a href="" class="btn btn-success btn-sm">Finalizar</a></td>
+            </tr>
+            {% else %}
+            <h3>Não há consultas abertas.</h3>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  <div class="container-sm">
+    <nav aria-label="...">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">2</span>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+</section>
+{% block scripts %}
+{% include "partials/_scripts.html" %}
+{% endblock scripts %}
+
+{% endblock %}
