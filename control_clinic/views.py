@@ -16,10 +16,9 @@ def init_app(app):
         page = request.args.get("page", 1, type=int)
         per_page = 5
 
-        clinic_care = ClinicCare.query.paginate(
+        clinic_care = ClinicCare.query.filter_by(in_service=True).paginate(
             page=page, per_page=per_page, error_out=False
         )
-        # clinic_care = ClinicCare.query.all()
         patients = Patient.query.all()
         medical_records = MedicalRecords.query.all()
         return render_template("dash/dash_initial_page.html",

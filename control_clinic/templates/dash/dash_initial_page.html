@@ -31,10 +31,13 @@
               <td>{{ consult.patient.firstname }}</td>
               <td>{{ consult.patient.document }}</td>
               <td>{{ consult.formatted_clinic_care_created_at }}</td>
-              <td><a href="" class="btn btn-success btn-sm">Finalizar</a></td>
+              <td>
+                <form action="{{ url_for('end_clinic_care', id=consult.id) }}" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn-success btn-sm">Finalizar</button>
+                </form>
+            </td>
             </tr>
-            {% else %}
-            <h3>Não há consultas abertas.</h3>
             {% endif %}
           {% endfor %}
         </tbody>

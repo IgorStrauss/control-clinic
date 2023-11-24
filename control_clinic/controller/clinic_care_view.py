@@ -152,3 +152,16 @@ def init_app(app):
             patients = []
 
         return render_template("patients/historical_clinic_care.html", patients=patients)
+
+    @app.route("/encerrar/atendimento/<int:id>", methods=["POST"], endpoint="end_clinic_care")
+    @login_required
+    def end_clinic_care(id):
+        clinic_care = ClinicCare.query.get_or_404(id)
+
+        clinic_care.in_service = False
+
+        db.session.commit()
+
+        flash("Atendimento encerrado com sucesso!", "success")
+
+        return redirect(url_for("index"))
