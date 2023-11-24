@@ -1,0 +1,83 @@
+{% extends "forms/base.html" %}
+
+{% block title %}<title>Historico de consulta(s)</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    <div class="container-sm text-center mb-2">
+        <h3>Buscar paciente por número de documento</h3>
+        <form class="form-inline my-2 my-lg-0" action="{{ url_for('historical__clinic_care_patient') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    
+            <input class="form-control mr-sm-2" type="search" name="document" placeholder="Documento" autocomplete="off" aria-label="Search" oninput="convertToUpperCase(this)">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+    </div>
+</section>
+<section>
+    <div class="container-sm">
+        <table class="table mt-2">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Teléfono</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <th scope="row">{{ patient.id }}</th>
+                    <td>{{ patient.firstname }}</td>
+                    <td>{{ patient.lastname }}</td>
+                    <th scope="row">{{ patient.document }}</th>
+                    <td>{{ patient.email }}
+                        <a href="mailto:{{ patient.email }}" id="email-link"><i class="fa-regular fa-envelope" id="fa-email"></i></a>
+                    </td>
+                    <td>
+                        {{ patient.phone.format_patient_phone }}
+                        {% if patient.phone.phone %}
+                        <a href="https://web.whatsapp.com/send?phone={{ patient.phone.phone }}" id="whatsapp-link" target="_blank">
+                            <i class="fa-brands fa-whatsapp" id="fa-whatsapp"></i>
+                        </a>
+                        {% else %}
+                        No informado
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not patient.medical_records %}
+                            <form method="post" action="{{ url_for('create_medical_record', patient_id=patient.id) }}" style="display: inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-info">Abrir Prontuário</button> 
+                            </form>
+                        {% endif %}
+                        {% if patient.medical_records %}
+                            <a class="btn btn-info mx-0" href="{{ url_for('list_clinic_care', id=patient.id) }}">Histórico</a>
+                        {% endif %}
+    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>            
+        </table>
+        {% include "partials/_messages.html" %}
+    </div>
+</section>
+
+
+{% block scripts %}
+
+{% endblock scripts %}
+<script>
+    function convertToUpperCase(inputElement) {
+        inputElement.value = inputElement.value.toUpperCase();
+    }
+</script>
+    
+{% endblock content %}

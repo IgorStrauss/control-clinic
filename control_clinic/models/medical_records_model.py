@@ -56,7 +56,6 @@ class ClinicCare(db.Model):
     medical_exams = db.relationship(
         MedicalExam, secondary="clinical_care_medical_exams", lazy="dynamic", backref="clinical_care"
     )
-    # exams = db.Column(db.ForeignKey(MedicalExam.id), nullable=True)
     in_service = db.Column(db.Boolean, default=True)
     blood_pressure = db.Column(db.String(10))
     heart_rate = db.Column(db.Float, default=0.0, nullable=False)
