@@ -236,11 +236,15 @@ def init_app(app):
     @app.route("/listar/atendimentos/medico", methods=["GET"], endpoint="list_clinic_care_doctor")
     def list_clinic_care_doctor():
         doctors = Doctor.query.all()
-        selected_doctor_id = request.args.get('doctor_id')
+        selected_doctor_id = request.args.get('doctor_id', type=int)
+
+        page = request.args.get("page", 1, type=int)
+        per_page = 5
 
         if selected_doctor_id:
-            clinic_care_doctor = ClinicCare.query.filter_by(
-                doctor_id=selected_doctor_id).all()
+            clinic_care_doctor = ClinicCare.query.filter_by(doctor_id=selected_doctor_id).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
         else:
             clinic_care_doctor = []
 
