@@ -206,17 +206,22 @@ def init_app(app):
             query = query.filter(ClinicCare.created_at <= end_date)
 
         # Execute a consulta
-        clinic_care_pagination = query.paginate(
-            page=page, per_page=per_page, error_out=False)
+        clinic_care_data = (
+            query.all()
+            if start_date
+            else query.paginate(page=page, per_page=per_page, error_out=False)
+        )
 
         # Verifica se retorna uma lista vazia baseado na consulta
-        no_records_message = None
-        if start_date and end_date and not clinic_care_pagination:
-            no_records_message = "NENHUM ATENDIMENTO ENCONTRADO NESTE PERÍODO"
+        no_records_message = (
+            "NENHUM ATENDIMENTO ENCONTRADO NESTE PERÍODO"
+            if start_date and not clinic_care_data
+            else None
+        )
 
         return render_template(
             "dash/dash_list_clinic_care.html",
-            clinic_care_pagination=clinic_care_pagination,
+            clinic_care_data=clinic_care_data,
             no_records_message=no_records_message,
         )
 
