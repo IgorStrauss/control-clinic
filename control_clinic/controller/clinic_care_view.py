@@ -226,9 +226,33 @@ def init_app(app):
         )
 
     @app.route(
-        "/limpar/consultas", methods=["POST", "GET"], endpoint="clear_clinic_care"
+        "/limpar/consultas/", methods=["POST", "GET"], endpoint="clear_clinic_care"
     )
     @login_required
     def clear_clinic_care():
         """Limpar a lista de consultas, após filtro aplicado."""
         return redirect(url_for("list_clinic_care_all"))
+
+    @app.route("/listar/atendimentos/medico", methods=["GET"], endpoint="list_clinic_care_doctor")
+    def list_clinic_care_doctor():
+        doctors = Doctor.query.all()
+        selected_doctor_id = request.args.get('doctor_id')
+
+        if selected_doctor_id:
+            clinic_care_doctor = ClinicCare.query.filter_by(
+                doctor_id=selected_doctor_id).all()
+        else:
+            clinic_care_doctor = []
+
+        return render_template("dash/dash_list_clinic_care_doctor.html",
+                               clinic_care_doctor=clinic_care_doctor,
+                               doctors=doctors,
+                               selected_doctor_id=selected_doctor_id)
+
+    @app.route(
+        "/limpar/consultas/filtro/medicos", methods=["POST", "GET"], endpoint="clear_clinic_care_doctor"
+    )
+    @login_required
+    def clear_clinic_care_doctor():
+        """Limpar a lista de consultas, após filtro aplicado."""
+        return redirect(url_for("list_clinic_care_doctor"))

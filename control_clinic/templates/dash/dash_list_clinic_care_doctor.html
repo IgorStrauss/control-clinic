@@ -1,0 +1,76 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Consultas</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    {% include "partials/_messages.html" %}
+</section>
+
+<section style="background-color: #222">
+    <div class="container-md">
+    <div class="row" style="padding: 2px">
+        <div class="col-md-10">
+        <form  action="{{ url_for('list_clinic_care_doctor') }}" style="margin-top:1rem" method="get">
+            <div class="form-group">
+                <select class="custom-select form-control" name="doctor_id" id="doctor_select">
+                    <option value="" {% if not selected_doctor_id %}selected{% endif %}>Selecione um médico</option>
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}" {% if selected_doctor_id == doctor.id %}selected{% endif %}>
+                            {{ doctor.firstname }} {{ doctor.lastname }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary ml-2" style="margin-top:1rem">Filtrar</button>
+        </form>
+    </div>
+    <div class="col-md-1">
+    <a href="{{ url_for('list_clinic_care_doctor') }}"><i class="fa-solid fa-rotate-left"></i></a>
+    </div>
+</section>
+
+<section>
+    <div class="container-md">
+        {% if selected_doctor_id %}
+            <h2 class="mt-3">Consultas para o médico selecionado:</h2>
+            {% for consult in clinic_care_doctor %}
+            <div class="row" style="padding: 2px">
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label for="id" style="margin-top: 3px">ID</label>
+                        <input type="text" class="form-control" value="{{ consult.id }}" autocomplete="off" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="created_at" style="margin-top: 3px">Abertura</label>
+                        <input type="text" class="form-control" value="{{ consult.formatted_clinic_care_created_at }}"
+                            autocomplete="off" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="lastname" style="margin-top: 3px">Paciente</label>
+                        <input type="text" class="form-control"
+                            value="{{ consult.patient.firstname }} {{ consult.patient.lastname }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="firstname" style="margin-top: 3px">Médico</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname"
+                            value="{{ consult.doctor }} {{ consult.doctor.lastname }}" autocomplete="off" readonly>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
