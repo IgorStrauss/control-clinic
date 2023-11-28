@@ -206,24 +206,57 @@ def init_app(app):
             query = query.filter(ClinicCare.created_at <= end_date)
 
         # Execute a consulta
-        clinic_care_pagination = query.paginate(
-            page=page, per_page=per_page, error_out=False)
+        clinic_care_data = (
+            query.all()
+            if start_date
+            else query.paginate(page=page, per_page=per_page, error_out=False)
+        )
 
         # Verifica se retorna uma lista vazia baseado na consulta
-        no_records_message = None
-        if start_date and end_date and not clinic_care_pagination:
-            no_records_message = "NENHUM ATENDIMENTO ENCONTRADO NESTE PERÍODO"
+        no_records_message = (
+            "NENHUM ATENDIMENTO ENCONTRADO NESTE PERÍODO"
+            if start_date and not clinic_care_data
+            else None
+        )
 
         return render_template(
             "dash/dash_list_clinic_care.html",
-            clinic_care_pagination=clinic_care_pagination,
+            clinic_care_data=clinic_care_data,
             no_records_message=no_records_message,
         )
 
     @app.route(
-        "/limpar/consultas", methods=["POST", "GET"], endpoint="clear_clinic_care"
+        "/limpar/consultas/", methods=["POST", "GET"], endpoint="clear_clinic_care"
     )
     @login_required
     def clear_clinic_care():
         """Limpar a lista de consultas, após filtro aplicado."""
         return redirect(url_for("list_clinic_care_all"))
+
+    @app.route("/listar/atendimentos/medico", methods=["GET"], endpoint="list_clinic_care_doctor")
+    def list_clinic_care_doctor():
+        doctors = Doctor.query.all()
+        selected_doctor_id = request.args.get('doctor_id', type=int)
+
+        page = request.args.get("page", 1, type=int)
+        per_page = 5
+
+        if selected_doctor_id:
+            clinic_care_doctor = ClinicCare.query.filter_by(doctor_id=selected_doctor_id).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+        else:
+            clinic_care_doctor = []
+
+        return render_template("dash/dash_list_clinic_care_doctor.html",
+                               clinic_care_doctor=clinic_care_doctor,
+                               doctors=doctors,
+                               selected_doctor_id=selected_doctor_id)
+
+    @app.route(
+        "/limpar/consultas/filtro/medicos", methods=["POST", "GET"], endpoint="clear_clinic_care_doctor"
+    )
+    @login_required
+    def clear_clinic_care_doctor():
+        """Limpar a lista de consultas, após filtro aplicado."""
+        return redirect(url_for("list_clinic_care_doctor"))

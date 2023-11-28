@@ -1,0 +1,131 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Consultas por médico</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    {% include "partials/_messages.html" %}
+</section>
+
+<!-- Seção de seleção de médico -->
+<section style="background-color: #222">
+    <div class="container-md">
+        <div class="row" style="padding: 2px">
+            <div class="col-md-9">
+                <form action="{{ url_for('list_clinic_care_doctor') }}" style="margin-top:1rem" method="get">
+                    <div class="form-group">
+                        <select class="custom-select form-control" name="doctor_id" id="doctor_select">
+                            <option value="" {% if not selected_doctor_id %}selected{% endif %}>Selecione um médico
+                            </option>
+                            {% for doctor in doctors %}
+                            <option value="{{ doctor.id }}" {% if selected_doctor_id==doctor.id %}selected{% endif %}>
+                                {{ doctor.firstname }} {{ doctor.lastname }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary ml-2" style="margin-top:1rem"> Filtrar por médico</button>
+                </form>
+            </div>
+            <div class="col-md-1">
+                <a href="{{ url_for('list_clinic_care_doctor') }}"><i class="fa-solid fa-rotate-left"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seção de consultas para o médico selecionado -->
+<section>
+    <div class="container-md mt-5">
+        {% if selected_doctor_id %}
+        {% for consult in clinic_care_doctor.items %}
+        <div class="row" style="padding: 2px">
+            <!-- Renderize aqui os detalhes da consulta para o médico selecionado -->
+            <div class="col-md-1">
+                <div class="form-group">
+                    <label for="id" style="margin-top: 3px">ID</label>
+                    <input type="text" class="form-control" value="{{ consult.id }}" autocomplete="off" readonly>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="created_at" style="margin-top: 3px">Abertura</label>
+                    <input type="text" class="form-control" value="{{ consult.formatted_clinic_care_created_at }}"
+                        autocomplete="off" readonly>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="lastname" style="margin-top: 3px">Paciente</label>
+                    <input type="text" class="form-control"
+                        value="{{ consult.patient.firstname }} {{ consult.patient.lastname }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="firstname" style="margin-top: 3px">Médica(o)</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname"
+                        value="{{ consult.doctor }} {{ consult.doctor.lastname }}" autocomplete="off" readonly>
+                </div>
+            </div>
+            <div class="col-md-1">
+                {% if consult.in_service %}
+                <i class="fa-solid fa-lock-open"></i>
+                {% else %}
+                <i class="fa-solid fa-lock"></i>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Adicione a navegação de página aqui -->
+        <ul class="pagination">
+            {% if clinic_care_doctor.has_prev %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('list_clinic_care_doctor', page=clinic_care_doctor.prev_num, doctor_id=selected_doctor_id) }}">
+                    <i class="fa-solid fa-circle-chevron-left"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link"><i class="fa-solid fa-circle-chevron-left"></i></span>
+            </li>
+            {% endif %}
+
+            {% set start_page = clinic_care_doctor.page - 2 %}
+            {% if start_page < 1 %} {% set start_page=1 %} {% endif %} {% set end_page=start_page + 4 %} {% if end_page>
+                clinic_care_doctor.pages %}
+                {% set end_page = clinic_care_doctor.pages %}
+                {% set start_page = end_page - 4 %}
+                {% if start_page < 1 %} {% set start_page=1 %} {% endif %} {% endif %} {% for page_num in
+                    range(start_page, end_page + 1) %} <li
+                    class="page-item{% if page_num == clinic_care_doctor.page %} active{% endif %}">
+                    <a class="page-link"
+                        href="{{ url_for('list_clinic_care_doctor', page=page_num, doctor_id=selected_doctor_id) }}">
+                        {{ page_num }}
+                    </a>
+                    </li>
+                    {% endfor %}
+
+                    {% if clinic_care_doctor.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{ url_for('list_clinic_care_doctor', page=clinic_care_doctor.next_num, doctor_id=selected_doctor_id) }}">
+                            <i class="fa-solid fa-circle-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="fa-solid fa-circle-chevron-right"></i></span>
+                    </li>
+                    {% endif %}
+        </ul>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
