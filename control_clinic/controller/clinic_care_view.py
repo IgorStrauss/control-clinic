@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 
@@ -129,9 +131,7 @@ def init_app(app):
         patient = Patient.query.get_or_404(clinic_care.patient_id)
 
         return render_template(
-            "patients/view_clinic_care.html",
-            clinic_care=clinic_care,
-            patient=patient
+            "patients/view_clinic_care.html", clinic_care=clinic_care, patient=patient
         )
 
     @app.route(
@@ -151,9 +151,13 @@ def init_app(app):
         else:
             patients = []
 
-        return render_template("patients/historical_clinic_care.html", patients=patients)
+        return render_template(
+            "patients/historical_clinic_care.html", patients=patients
+        )
 
-    @app.route("/encerrar/atendimento/<int:id>", methods=["POST"], endpoint="end_clinic_care")
+    @app.route(
+        "/encerrar/atendimento/<int:id>", methods=["POST"], endpoint="end_clinic_care"
+    )
     @login_required
     def end_clinic_care(id):
         clinic_care = ClinicCare.query.get_or_404(id)
@@ -165,3 +169,61 @@ def init_app(app):
         flash("Atendimento encerrado com sucesso!", "success")
 
         return redirect(url_for("index"))
+
+    @app.route("/listar/atendimentos", methods=["GET"], endpoint="list_clinic_care_all")
+    @login_required
+    def list_clinic_care_all():
+        """Listar todas as consultas, com filtros opcionais de data."""
+
+        # Obtenha os parâmetros da data inicial e final da consulta de URL
+        start_date_str = request.args.get("start_date")
+        end_date_str = request.args.get("end_date")
+
+        # Converte as strings de data para objetos datetime se fornecidas
+        start_date = (
+            datetime.strptime(
+                start_date_str, "%Y-%m-%d") if start_date_str else None
+        )
+        end_date = datetime.strptime(
+            end_date_str, "%Y-%m-%d") if end_date_str else None
+
+        # Obtenha a página e o número de registros por página
+        page = request.args.get("page", 1, type=int)
+        per_page = 5
+
+        # Crie a consulta base sem filtro de data
+        query = ClinicCare.query.order_by(ClinicCare.id.desc())
+
+        # Adicione o filtro de data, se fornecido
+        if start_date and end_date:
+            end_date += timedelta(days=1)
+            query = query.filter(
+                ClinicCare.created_at.between(start_date, end_date))
+        elif start_date:
+            query = query.filter(ClinicCare.created_at >= start_date)
+        elif end_date:
+            end_date += timedelta(days=1)
+            query = query.filter(ClinicCare.created_at <= end_date)
+
+        # Execute a consulta
+        clinic_care_pagination = query.paginate(
+            page=page, per_page=per_page, error_out=False)
+
+        # Verifica se retorna uma lista vazia baseado na consulta
+        no_records_message = None
+        if start_date and end_date and not clinic_care_pagination:
+            no_records_message = "NENHUM ATENDIMENTO ENCONTRADO NESTE PERÍODO"
+
+        return render_template(
+            "dash/dash_list_clinic_care.html",
+            clinic_care_pagination=clinic_care_pagination,
+            no_records_message=no_records_message,
+        )
+
+    @app.route(
+        "/limpar/consultas", methods=["POST", "GET"], endpoint="clear_clinic_care"
+    )
+    @login_required
+    def clear_clinic_care():
+        """Limpar a lista de consultas, após filtro aplicado."""
+        return redirect(url_for("list_clinic_care_all"))

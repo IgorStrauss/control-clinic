@@ -1,0 +1,158 @@
+{% extends "forms/base.html" %}
+{% block title %}<title>Consultas</title>{% endblock title %}
+{% block content %}
+<section>
+    {% include "forms/_navbar-register.html" %}
+</section>
+<section>
+    {% include "partials/_messages.html" %}
+</section>
+<!-- Seção dos dados da consulta -->
+<section style="background-color: #222; padding-top: 0.2rem">
+    <div class="container-md mt-3 d-flex justify-content-center align-items-center">
+        <form action="{{ url_for('list_clinic_care_all') }}" method="get">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="date" class="form-control" id="start_date" name="start_date"
+                                placeholder="Data Inicial" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="date" class="form-control" id="end_date" name="end_date"
+                                placeholder="Data Final" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-filter"></i> Filtrar por
+                        data</button>
+                </div>
+                <div class="col-md-3">
+                    <a class="btn btn-info" href="{{ url_for('clear_clinic_care') }}"><i
+                            class="fa-solid fa-rotate-left"></i> Limpar consulta</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="container-md text-center">
+        {% if no_records_message %}
+        <div class="mt-3">
+            <h3>{{ no_records_message }}</h3>
+        </div>
+        {% endif %}
+    </div>
+
+</section>
+<!--Seção retorno dos dados da consulta-->
+<section>
+    <div class="container-md mt-5">
+        <div class="container-lg">
+            {% for consult in clinic_care_pagination %}
+            <div class="row" style="padding: 2px">
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label for="id" style="margin-top: 3px">ID</label>
+                        <input type="text" class="form-control" value="{{ consult.id }}" autocomplete="off" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="created_at" style="margin-top: 3px">Abertura</label>
+                        <input type="text" class="form-control" value="{{ consult.formatted_clinic_care_created_at }}"
+                            autocomplete="off" readonly>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="lastname" style="margin-top: 3px">Paciente</label>
+                        <input type="text" class="form-control"
+                            value="{{ consult.patient.firstname }} {{ consult.patient.lastname }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="firstname" style="margin-top: 3px">Médico</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname"
+                            value="{{ consult.doctor }} {{ consult.doctor.lastname }}" autocomplete="off" readonly>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    {% if consult.in_service %}
+                    <i class="fa-solid fa-lock-open"></i>
+                    {% else %}
+                    <i class="fa-solid fa-lock"></i>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!--Paginacao-->
+    <div class="container-sm">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if clinic_care_pagination.has_prev %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('list_clinic_care_all', page=clinic_care_pagination.prev_num) }}"><i
+                            class="fa-solid fa-circle-chevron-left"></i></a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fa-solid fa-circle-chevron-left"></i></span>
+                </li>
+                {% endif %}
+
+                {% set start_page = clinic_care_pagination.page - 2 %}
+                {% if start_page < 1 %} {% set start_page=1 %} {% endif %} {% set end_page=start_page + 4 %} {% if
+                    end_page> clinic_care_pagination.pages %}
+                    {% set end_page = clinic_care_pagination.pages %}
+                    {% set start_page = end_page - 4 %}
+                    {% if start_page < 1 %} {% set start_page=1 %} {% endif %} {% endif %} {% for page_num in
+                        range(start_page, end_page + 1) %} <li
+                        class="page-item{% if page_num == clinic_care_pagination.page %} active{% endif %}">
+                        <a class="page-link" href="{{ url_for('list_clinic_care_all', page=page_num) }}">{{ page_num
+                            }}</a>
+                        </li>
+                        {% endfor %}
+
+                        {% if clinic_care_pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="{{ url_for('list_clinic_care_all', page=clinic_care_pagination.next_num) }}"><i
+                                    class="fa-solid fa-circle-chevron-right"></i></a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fa-solid fa-circle-chevron-right"></i></span>
+                        </li>
+                        {% endif %}
+            </ul>
+        </nav>
+    </div>
+</section>
+
+{% block scripts %}
+<script>
+    $(function () {
+        $("#start_date, #end_date").datepicker();
+    });
+</script>
+{% endblock scripts %}
+{% endblock %}
