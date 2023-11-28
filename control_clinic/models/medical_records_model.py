@@ -51,6 +51,7 @@ class ClinicCare(db.Model):
     medical_rec_id = db.Column(db.ForeignKey(
         MedicalRecords.id), nullable=False)
     doctor_id = db.Column(db.ForeignKey(Doctor.id), nullable=False)
+    doctor = db.relationship("Doctor", backref="clinical_care_doctors")
     patient_id = db.Column(db.ForeignKey(Patient.id), nullable=False)
     patient = db.relationship("Patient", backref="clinical_care_records")
     medical_exams = db.relationship(
