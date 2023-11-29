@@ -14,53 +14,40 @@
 
       <div class="form-group">
         <label for="firstname">Primer nombre</label>
-        <input type="text" class="form-control" id="firstname" name="firstname"  autocomplete="off" value="{{ patient.firstname }}"
+        <input type="text" class="form-control" id="firstname" name="firstname" value="{{ patient.firstname }}" required autocomplete="off" autofocus
           autocapitalize="words">
-        {% if form.firstname.errors %}
-        <ul class="errors">
-          {% for error in form.firstname.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
       </div>
- 
       <div class="form-group">
         <label for="lastname">Apellido</label>
-        <input type="text" class="form-control" id="lastname" name="lastname"  autocomplete="off" value="{{ patient.lastname }}"
+        <input type="text" class="form-control" id="lastname" name="lastname" value="{{ patient.lastname }}" required autocomplete="off"
           autocapitalize="words">
-        {% if form.lastname.errors %}
-        <ul class="errors">
-          {% for error in form.lastname.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-      <div class="form-group">
-        <label for="birtday">Cumpleaños</label>
-        <input type="date" class="form-control" id="birtday" name="birtday" value="{{ patient.birtday }}" autocomplete="off">
       </div>
       <div class="form-group">
         <label for="phone">Teléfono móvil personal</label>
-        <input type="text" class="form-control" id="phone" name="phone"  autocomplete="off" value="{{ patient.phone.phone }}">
+        <input type="text" class="form-control" id="phone" name="phone" value="{{ patient.phone }}" required autocomplete="off">
       </div>
+      <div class="form-group">
+        <label for="birtday">Cumpleaños</label>
+        <input type="date" class="form-control" id="birtday" name="birtday" value="{{ patient.birtday }}" required autocomplete="off">
+      </div>
+      
       <div class="form-group">
         <label for="sex">Sexo</label>
         <select class="form-control" id="sex" name="sex">
-          <option value="{{ patient.sex }}">{{ patient.sex }}</option>
-          <option value="masculino">Masculino</option>
-          <option value="feminino">Femenino</option>
-          <option value="outros">Otro</option>
+            {% for choice in form.sex.choices %}
+                <option value="{{ choice[0] }}" {% if choice[0] == patient.sex %}selected{% endif %}>{{ choice[1] }}</option>
+            {% endfor %}
         </select>
-      </div>
-      <div class="form-group">
+    </div>
+          <div class="form-group">
         <label for="name_father">Apellido paterno</label>
-        <input type="text" class="form-control" id="name_father" name="name_father" value="{{ patient.name_father }}" autocomplete="off" autocapitalize="words">
+        <input type="text" class="form-control" id="name_father" name="name_father" value="{{ patient.name_father }}" autocomplete="off"
+          autocapitalize="words">
       </div>
       <div class="form-group">
         <label for="name_mather">Apellido materno</label>
-        <input type="text" class="form-control" id="name_mather" name="name_mather" value="{{ patient.name_mather }}" autocomplete="off" autocapitalize="words">
+        <input type="text" class="form-control" id="name_mather" name="name_mather" value="{{ patient.name_mather }}" required autocomplete="off"
+          autocapitalize="words">
       </div>
       <div class="form-group">
         <label for="reference_telephone">Telefone para emergência</label>
@@ -72,27 +59,24 @@
         <input type="text" class="form-control" id="reference_contact" name="reference_contact" value="{{ patient.reference_contact }}" required
           autocomplete="off" autocapitalize="words">
       </div>
-
+      <!--Documento-->
       <div class="form-group">
         <label for="document">Documento</label>
-        <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}" autocomplete="off" autocapitalize="no">
+        <input type="text" class="form-control" id="document" name="document" value="{{ patient.document }}" required autocomplete="off"
+          autocapitalize="no">
       </div>
+      <!--E-mail-->
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"  value="{{ patient.email }}">
+      </div>
+      <!--Profissao-->
       <div class="form-group">
         <label for="profession">Profissão</label>
         <input type="text" class="form-control" id="profession" name="profession" value="{{ patient.profession }}" autocomplete="off"
           autocapitalize="no">
       </div>
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"  value="{{ patient.email }}">
-        {% if form.email.errors %}
-        <ul class="errors">
-          {% for error in form.email.errors %}
-          <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
+      <!--Estado civil-->
       <div class="form-group">
         <label for="marital_status">Estado civil</label>
         <select class="form-control" id="marital_status" name="marital_status">
@@ -102,70 +86,6 @@
           <option value="divorciado">Divorciado</option>
           <option value="viudo">Viudo</option>
         </select>
-      </div>
-      <div class="form-group">
-        <label for="blood_type">Tipo sanguineo</label>
-        <select class="form-control" id="blood_type" name="blood_type">
-          <option value="{{ patient.blood_type }}">{{ patient.blood_type }}</option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-          <option value="Não sabe">Não sabe</option>
-        </select>
-      </div>
-      <div class="container mx-0 px-0">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <input type="checkbox" id="smoker" name="smoker" {% if patient.smoker %}checked{% endif %} aria-label="Checkbox for following text input">                  <span style="margin-left: 1rem">Fumante</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <input type="checkbox" id="consumes_alcohol" name="consumes_alcohol" {% if patient.consumes_alcohol %}checked{% endif %}
-                    aria-label="Checkbox for following text input">
-                  <span style="margin-left: 1rem">Consome bebidas alcoolicas</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <input type="checkbox" id="drug_user" name="drug_user" {% if patient.drug_user %}checked{% endif %} aria-label="Checkbox for following text input">
-                  <span style="margin-left: 1rem">Usuário de Drogas</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="chronic_disease">Enfermedad crónica</label>
-        <input type="text" class="form-control" id="chronic_disease" name="chronic_disease" value="{{ patient.chronic_disease }}" required autocomplete="off"
-          autocapitalize="no">
-      </div>
-      <div class="form-group">
-        <label for="controlled_medicine">Usa remedio controlado</label>
-        <input type="text" class="form-control" id="controlled_medicine" name="controlled_medicine" value="{{ patient.controlled_medicine }}" required autocomplete="off"
-          autocapitalize="no">
-      </div>
-      <div class="form-group">
-        <label for="allergies">Alergias</label>
-        <input type="text" class="form-control" id="allergies" name="allergies" value="{{ patient.allergies }}" required autocomplete="off"
-          autocapitalize="no">
       </div>
       <div class="form-group">
         <label for="address">Endereço</label>
@@ -225,6 +145,73 @@
           <option value="To">Tocantins</option>
           <option value="No Brasil">Não Brasil</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label for="blood_type">Tipo sanguineo</label>
+        <select class="form-control" id="blood_type" name="blood_type">
+          <option value="{{ patient.blood_type }}">{{ patient.blood_type }}</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="Não sabe">Não sabe</option>
+        </select>
+      </div>
+      <div class="container mx-0 px-0">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" id="smoker" name="smoker" {% if patient.smoker %}checked{% endif %}
+                   aria-label="Checkbox for following text input">
+                  <span style="margin-left: 1rem">Fumante</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" id="consumes_alcohol" name="consumes_alcohol" {% if patient.consumes_alcohol %}checked{% endif %}
+                    aria-label="Checkbox for following text input">
+                  <span style="margin-left: 1rem">Consome bebidas alcoolicas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" id="drug_user" name="drug_user" {% if patient.drug_user %}checked{% endif %}
+                   aria-label="Checkbox for following text input">
+                  <span style="margin-left: 1rem">Usuário de Drogas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="chronic_disease">Enfermedad crónica</label>
+        <input type="text" class="form-control" id="chronic_disease" name="chronic_disease" value="{{ patient.chronic_disease }}" required autocomplete="off"
+          autocapitalize="no">
+      </div>
+      <div class="form-group">
+        <label for="controlled_medicine">Usa remedio controlado</label>
+        <input type="text" class="form-control" id="controlled_medicine" name="controlled_medicine" value="{{ patient.controlled_medicine }}" required autocomplete="off"
+          autocapitalize="no">
+      </div>
+      <div class="form-group">
+        <label for="allergies">Alergias</label>
+        <input type="text" class="form-control" id="allergies" name="allergies" value="{{ patient.allergies }}" required autocomplete="off"
+          autocapitalize="no">
       </div>
 
       <button type="submit" class="btn btn-primary mb-3">Actualizar</button>
