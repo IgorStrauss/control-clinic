@@ -59,7 +59,7 @@ class Patient(db.Model):
     )
     clinical_care = db.relationship(
         "ClinicCare",
-        backref="patient_records",
+        back_populates="patient",
         lazy="joined",
         cascade="all, delete-orphan",
     )

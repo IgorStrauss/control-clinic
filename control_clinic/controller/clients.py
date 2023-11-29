@@ -127,78 +127,61 @@ def init_app(app):
         return render_template("patients/search_patient.html",
                                patients=patients)
 
-    @app.route(
-        "/atualizar/cliente/<int:id>",
-        methods=["GET", "POST"],
-        endpoint="update_patient",
-    )
+    @app.route("/atualizar/cliente/<int:id>", methods=["GET", "POST"], endpoint="update_patient")
     @login_required
     def update_patient(id):
         form = PatientUpdateForm()
         patient = Patient.query.get_or_404(id)
         patient_phone = patient.phone
         patient_address = patient.address
-        if form.validate_on_submit():
-            print(f"Name: {form.firstname.data}")
-            if form.firstname.data:
+
+        try:
+            print('linha 139 - antes da validação do formulario')
+            print(f'Formulário é válido? {form.validate()}')
+            for field, value in form.data.items():
+                print(f"{field}: {value}")
+
+            if form.validate_on_submit():
+                print('Linha 145 - dentro da validação do formulario')
+                # Atualizar os dados do paciente
                 patient.firstname = form.firstname.data.upper()
-            if form.lastname.data:
                 patient.lastname = form.lastname.data.upper()
-            if form.email.data:
                 patient.email = form.email.data
-            if form.birtday.data:
                 patient.birtday = form.birtday.data
-            if form.sex.data:
                 patient.sex = form.sex.data.upper()
-            if form.name_father.data:
                 patient.name_father = form.name_father.data.upper()
-            if form.name_mather.data:
                 patient.name_mather = form.name_mather.data.upper()
-            if form.reference_telephone.data:
                 patient.reference_telephone = form.reference_telephone.data
-            if form.reference_contact.data:
                 patient.reference_contact = form.reference_contact.data.upper()
-            if form.document.data:
                 patient.document = form.document.data.upper()
-            if form.marital_status.data:
                 patient.marital_status = form.marital_status.data.upper()
-            if form.profession.data:
                 patient.profession = form.profession.data.upper()
-            if form.controlled_medicine.data:
                 patient.controlled_medicine = form.controlled_medicine.data.upper()
-            if form.blood_type.data:
                 patient.blood_type = form.blood_type.data
-            if form.smoker.data:
                 patient.smoker = form.smoker.data
-            if form.consumes_alcohol.data:
                 patient.consumes_alcohol = form.consumes_alcohol.data
-            if form.drug_user.data:
                 patient.drug_user = form.drug_user.data
-            if form.chronic_disease.data:
                 patient.chronic_disease = form.chronic_disease.data.upper()
-            if form.allergies.data:
                 patient.allergies = form.allergies.data.upper()
-            if form.address.data:
                 patient_address.address = form.address.data.upper()
-            if form.number.data:
                 patient_address.number = form.number.data
-            if form.complement.data:
                 patient_address.complement = form.complement.data.upper()
-            if form.neighborhood.data:
                 patient_address.neighborhood = form.neighborhood.data.upper()
-            if form.city.data:
                 patient_address.city = form.city.data.upper()
-            if form.state.data:
                 patient_address.state = form.state.data
-            if form.phone.data:
                 patient_phone.phone = form.phone.data
 
-            db.session.commit()
-            flash("Paciente actualizado exitosamente!", "success")
-            return redirect(url_for("index"))
-        return render_template(
-            "patients/update_patient.html", form=form, patient=patient
-        )
+                print('linha 169 - apos atualizar os dados do paciente, antes do commit')
+
+                db.session.commit()
+                flash("Paciente actualizado exitosamente!", "success")
+                return redirect(url_for("index"))
+            print('linha 174 - dentro do except')
+        except Exception as e:
+            # Em caso de erro, você pode exibir uma mensagem ou fazer log do erro
+            flash(f"Erro ao atualizar paciente: {str(e)}", "error")
+        print('linha 178 - fim do try, atualizando a pagina sem atualizar')
+        return render_template("patients/update_patient.html", form=form, patient=patient, patient_phone=patient_phone, patient_address=patient_address)
 
     @app.route("/listar/prontuario/paciente/<int:id>",
                endpoint="list_medical_records")

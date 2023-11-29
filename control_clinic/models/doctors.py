@@ -25,9 +25,9 @@ class Doctor(db.Model, UserMixin):
         db.DateTime, onupdate=datetime.now, server_default=db.func.now()
     )
     phone = db.relationship("DoctorPhone", backref="doctor", uselist=False)
-    clinical_care = db.relationship(
+    clinical_care_records = db.relationship(
         "ClinicCare",
-        backref="doctor_records",
+        back_populates="doctor",
         lazy="joined",
         cascade="all, delete-orphan",
     )
