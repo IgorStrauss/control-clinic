@@ -51,10 +51,8 @@ def init_app(app):
 
         if form.validate_on_submit():
             try:
-                print("linha 30")
                 if patient.medical_records is None:
                     flash("Este paciente não possui um prontuário.", "info")
-                    print("linha 33")
                     return redirect(url_for("index"))
                 else:
                     print("Dados recebidos:", form.data)
@@ -63,7 +61,7 @@ def init_app(app):
                         medical_rec_id=form.medical_rec_id.data,
                         patient_id=form.patient_id.data,
                         doctor_id=form.doctor_id.data,
-                        # exams=form.exams.data,
+                        attendant_id=form.attendant_id.data,
                         medical_exams=[
                             MedicalExam.query.get(exam_id)
                             for exam_id in form.selected_exams.data

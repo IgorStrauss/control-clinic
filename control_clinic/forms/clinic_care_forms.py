@@ -23,6 +23,12 @@ class ClinicCareForm(FlaskForm):
             DataRequired("Este campo é obrigatório."),
         ]
     )
+    attendant_id = IntegerField(
+        "Atendant_id",
+        validators=[
+            DataRequired("Este campo é obrigatório."),
+        ]
+    )
     selected_exams = SelectMultipleField(
         "exams",
         choices=[],

@@ -15,6 +15,7 @@ from .admin_service import admin
 from .controller import (clients, clinic_care_view, dash, doctors, employees,
                          medical_records_view, signin)
 from .controller.medical_records import initial_page
+from .service import populate_medical_exams, populate_specialty_data
 
 login_manager = LoginManager()
 
@@ -71,5 +72,10 @@ def create_app():
     Migrate(app, db)
     CSRFProtect(app)
     Bootstrap(app)
+
+    with app.app_context():
+        db.create_all()
+        populate_medical_exams()
+        populate_specialty_data()
 
     return app

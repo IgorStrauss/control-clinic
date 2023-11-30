@@ -3,6 +3,7 @@ from datetime import datetime
 from control_clinic import db
 
 from .doctors import Doctor
+from .employees import Employees
 from .patients import Patient
 
 clinical_care_medical_exams = db.Table(
@@ -50,6 +51,9 @@ class ClinicCare(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     medical_rec_id = db.Column(db.ForeignKey(
         MedicalRecords.id), nullable=False)
+    attendant_id = db.Column(db.ForeignKey(Employees.id), nullable=False)
+    attendant = db.relationship(
+        "Employees", back_populates="clinic_care_attended")
     doctor_id = db.Column(db.ForeignKey(Doctor.id), nullable=False)
     doctor = db.relationship("Doctor", back_populates="clinical_care_records")
     patient_id = db.Column(db.ForeignKey(Patient.id), nullable=False)
