@@ -52,6 +52,8 @@
       <!--Prontuario ID hidden-->
       <input type="hidden" name="medical_rec_id" id="medical_rec_id" value="{{ medical_record.id }}">
       <input type="hidden" name="patient_id" id="patient_id" value="{{ patient.id }}">
+      <input type="hidden" name="attendant_id" id="attendant_id" value="{{ current_user.id }}">
+
       <!--Medicos-->
       <div class="form-group">
         <label for="doctor_id">Medico</label>

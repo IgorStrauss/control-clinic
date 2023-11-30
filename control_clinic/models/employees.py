@@ -22,6 +22,9 @@ class Employees(db.Model, UserMixin):
     password = db.Column(db.String(64), nullable=False)
     phone = db.relationship(
         "EmployeePhone", backref="employee", uselist=False)
+    clinic_care_attended = db.relationship(
+        "ClinicCare", back_populates="attendant", lazy="joined",
+    )
 
     def __str__(self):
         return self.firstname
