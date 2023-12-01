@@ -19,9 +19,9 @@
                     autocomplete="off" readonly>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
-                <label for="">Status da consulta</label>
+                <label for="">Status</label>
                 {% if clinic_care.in_service %}
                 <input type="text" class="form-control" value="Aberta" readonly>
                 {% else %}
@@ -29,12 +29,19 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group">
                 <label for="">Consulta ID</label>
                 <input type="text" class="form-control" value="{{ clinic_care.id }}" readonly>
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="">Atendente</label>
+                <input type="text" class="form-control" value="{{ attendant.firstname }} {{ attendant.lastname }}" readonly>
+            </div>
+        </div>
+
     </div>
 </div>
 <!--Linha 2-->

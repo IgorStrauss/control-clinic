@@ -6,6 +6,7 @@ from flask_login import login_required
 from control_clinic.forms.clinic_care_forms import ClinicCareForm
 from control_clinic.models import db
 from control_clinic.models.doctors import Doctor
+from control_clinic.models.employees import Employees
 from control_clinic.models.medical_records_model import (ClinicCare,
                                                          MedicalExam,
                                                          MedicalRecords)
@@ -127,9 +128,13 @@ def init_app(app):
     def view_clinic_care(id):
         clinic_care = ClinicCare.query.get_or_404(id)
         patient = Patient.query.get_or_404(clinic_care.patient_id)
+        attendant = Employees.query.get_or_404(clinic_care.attendant_id)
 
         return render_template(
-            "patients/view_clinic_care.html", clinic_care=clinic_care, patient=patient
+            "patients/view_clinic_care.html",
+            clinic_care=clinic_care,
+            patient=patient,
+            attendant=attendant,
         )
 
     @app.route(
@@ -231,28 +236,36 @@ def init_app(app):
         """Limpar a lista de consultas, após filtro aplicado."""
         return redirect(url_for("list_clinic_care_all"))
 
-    @app.route("/listar/atendimentos/medico", methods=["GET"], endpoint="list_clinic_care_doctor")
+    @app.route(
+        "/listar/atendimentos/medico",
+        methods=["GET"],
+        endpoint="list_clinic_care_doctor",
+    )
     def list_clinic_care_doctor():
         doctors = Doctor.query.all()
-        selected_doctor_id = request.args.get('doctor_id', type=int)
+        selected_doctor_id = request.args.get("doctor_id", type=int)
 
         page = request.args.get("page", 1, type=int)
         per_page = 5
 
         if selected_doctor_id:
-            clinic_care_doctor = ClinicCare.query.filter_by(doctor_id=selected_doctor_id).paginate(
-                page=page, per_page=per_page, error_out=False
-            )
+            clinic_care_doctor = ClinicCare.query.filter_by(
+                doctor_id=selected_doctor_id
+            ).paginate(page=page, per_page=per_page, error_out=False)
         else:
             clinic_care_doctor = []
 
-        return render_template("dash/dash_list_clinic_care_doctor.html",
-                               clinic_care_doctor=clinic_care_doctor,
-                               doctors=doctors,
-                               selected_doctor_id=selected_doctor_id)
+        return render_template(
+            "dash/dash_list_clinic_care_doctor.html",
+            clinic_care_doctor=clinic_care_doctor,
+            doctors=doctors,
+            selected_doctor_id=selected_doctor_id,
+        )
 
     @app.route(
-        "/limpar/consultas/filtro/medicos", methods=["POST", "GET"], endpoint="clear_clinic_care_doctor"
+        "/limpar/consultas/filtro/medicos",
+        methods=["POST", "GET"],
+        endpoint="clear_clinic_care_doctor",
     )
     @login_required
     def clear_clinic_care_doctor():
