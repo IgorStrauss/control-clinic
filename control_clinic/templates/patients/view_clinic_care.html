@@ -141,15 +141,14 @@
     <div class="container-lg">
         {% for exam in clinic_care.medical_exams %}
         <div class="row">
-            <div class="col-lg-4 mb-5">
-                <label style="margin-top: 5px;">Exame</label>
-                <input type="text" class="form-control" value="{{ exam.exam }}" readonly>
-            </div>
             <div class="col-lg-1 mb-5">
                 <label style="margin-top: 5px;">Cod.</label>
                 <input type="text" class="form-control" readonly value="{{ exam.id }}">
             </div>
-
+            <div class="col-lg-4 mb-5">
+                <label style="margin-top: 5px;">Exame</label>
+                <input type="text" class="form-control" value="{{ exam.exam }}" readonly>
+            </div>
             <div class="col-lg-7 mb-5">
                 <label style="margin-top: 5px;">Descrição</label>
                 <input type="text" class="form-control" readonly value="{{ exam.description }}">
