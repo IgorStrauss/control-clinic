@@ -24,8 +24,8 @@ def init_app(app):
         medical_record = MedicalRecords(patient_id=patient.id)
         db.session.add(medical_record)
         db.session.commit()
-        flash("Prontuário criado com sucesso.", "success")
-        return redirect(url_for("index"))
+        flash("Prontuário criado com sucesso, agora pode iniciar o atendimento.", "success")
+        return redirect(url_for("start__clinic_care_patient"))
 
 
 # @app.route("/view_medical_record/<int:id>", methods=["GET"], endpoint="view_medical_record")
