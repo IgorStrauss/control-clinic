@@ -1,5 +1,7 @@
+from functools import wraps
+
 from flask import flash, redirect, render_template, url_for
-from flask_login import login_required
+from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 
 from control_clinic.forms.employees_form import (EmployeeForm,
@@ -8,19 +10,27 @@ from control_clinic.models import db
 from control_clinic.models.employees import EmployeePhone, Employees
 
 
+def custom_login_required(func):
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if Employees.query.count() > 0 and not current_user.is_authenticated:
+            flash("Você precisa fazer login para acessar esta página.", "error")
+            return redirect(url_for("login"))
+        return func(*args, **kwargs)
+    return decorated_view
+
+
 def init_app(app):
     @app.route(
         "/cadastro/funcionario", methods=["GET", "POST"], endpoint="register_employee"
     )
-    # @login_required
-    # TODO: definir login_required
-    # TODO: Definir regra que se tiver logado, redirecionar para index
+    @custom_login_required
     def register_employee():
         """Register employee with form"""
         form = EmployeeForm()
+
         if form.validate_on_submit():
             try:
-                # Verifique se o email já existe
                 existing_employee = Employees.query.filter_by(
                     email=form.email.data
                 ).first()
@@ -30,19 +40,22 @@ def init_app(app):
                     employee = Employees(
                         firstname=form.firstname.data.upper(),
                         lastname=form.lastname.data.upper(),
-                        email=form.email.data,
+                        email=form.email.data.upper(),
                         password=generate_password_hash(form.password.data),
                     )
                     db.session.add(employee)
                     db.session.commit()
 
-                    # Adicionando telefone
                     phone = EmployeePhone(
                         phone=form.phone.data,
                         employee=employee,
                     )
                     db.session.add(phone)
                     db.session.commit()
+
+                    if current_user.is_authenticated:
+                        flash("Empleado registrado exitosamente!", "success")
+                        return redirect(url_for("index"))
 
                     flash("Empleado registrado exitosamente!", "success")
                     return redirect(url_for("login"))
@@ -60,13 +73,15 @@ def init_app(app):
     @login_required
     def list_employees():
         employees = Employees.query.all()
-        return render_template("employees/list_employees.html", employees=employees)
+        return render_template("employees/list_employees.html",
+                               employees=employees)
 
     @app.route("/listar/funcionario/<int:id>", endpoint="list_employee")
     @login_required
     def list_employee(id):
         employee = Employees.query.get_or_404(id)
-        return render_template("employees/list_employee.html", employee=employee)
+        return render_template("employees/list_employee.html",
+                               employee=employee)
 
     @app.route(
         "/atualizar/funcionario/<int:id>",
@@ -78,7 +93,6 @@ def init_app(app):
         form = EmployeeUpdateForm()
         employee = Employees.query.get_or_404(id)
 
-        # Carregue os dados do telefone associado ao funcionário
         employee_phone = employee.phone
 
         if form.validate_on_submit():
@@ -87,23 +101,20 @@ def init_app(app):
             if form.lastname.data:
                 employee.lastname = form.lastname.data.upper()
             if form.email.data:
-                employee.email = form.email.data
+                employee.email = form.email.data.upper()
 
-            # Atualize o número de telefone se um novo número for fornecido
             if form.phone.data:
                 employee_phone.phone = form.phone.data
 
-            db.session.commit()  # Salva as atualizações no banco de dados
+            db.session.commit()
 
             flash("Dados do funcionário atualizados com sucesso", "success")
             return redirect(url_for("list_employee", id=id))
 
-        # Preenche os campos do formulário com os dados atuais do funcionário
         form.firstname.data = employee.firstname
         form.lastname.data = employee.lastname
         form.email.data = employee.email
 
-        # Preenche o campo de telefone com o número de telefone atual
         if employee_phone:
             form.phone.data = employee_phone.phone
 

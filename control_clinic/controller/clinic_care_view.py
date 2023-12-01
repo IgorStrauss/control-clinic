@@ -26,11 +26,13 @@ def init_app(app):
             patients = Patient.query.filter(
                 Patient.document == documento).all()
             if not patients:
-                flash("Cliente no localizado con este número de documento", "info")
+                flash("Cliente no localizado con este número de documento",
+                      "info")
         else:
             patients = []
 
-        return render_template("patients/start_clinic_care.html", patients=patients)
+        return render_template("patients/start_clinic_care.html",
+                               patients=patients)
 
     @app.route(
         "/iniciar/atendimento/paciente/<int:id>",
@@ -150,7 +152,8 @@ def init_app(app):
             patients = Patient.query.filter(
                 Patient.document == documento).all()
             if not patients:
-                flash("Cliente no localizado con este número de documento", "info")
+                flash("Cliente no localizado con este número de documento",
+                      "info")
         else:
             patients = []
 
